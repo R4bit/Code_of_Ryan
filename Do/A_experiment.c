@@ -9,5 +9,5 @@ void main()
     printf("sun is %lf \n" , a + b + c );
     printf(" \n") ;
     printf(" \n") ;
-    
+     
 }
