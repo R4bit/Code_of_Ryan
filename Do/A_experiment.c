@@ -8,5 +8,5 @@ void main()
     scanf("%lf , %d , %c" , &a , &b , &c );
     printf("sun is %lf \n" , a + b + c );
     printf(" \n") ;
- 
+    printf(" \n") ;
 }
