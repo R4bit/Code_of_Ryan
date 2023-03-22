@@ -18,3 +18,17 @@ int main() {
 
     return 0;
 }
+
+for (int i = 0; i < n; i++) 
+{
+    char ch = pairs(s[i]);
+    if (ch) 
+    {
+        if (top == 0 || steak[top - 1] != ch) {
+            return false;
+        }
+        top--;
+    } else {
+        steak[top++] = s[i];
+    }
+}
