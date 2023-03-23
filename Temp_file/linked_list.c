@@ -7,7 +7,7 @@ This shows the coding basics of single-linked-list in C programming.
 #include <stdlib.h>
 #include <stdbool.h>
 
-struct node 
+struct node
 {
    int data;
    int key;
@@ -38,7 +38,7 @@ void printList()
 }
 
 //insert link at the first location
-void insertFirst(int key, int data) 
+void insertFirst(int key, int data)
 {
    //create a link
    struct node *link = (struct node*) malloc(sizeof(struct node));

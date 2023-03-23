@@ -1,34 +1,46 @@
-#include <stdio.h>
-
-int main() {
-    int arr[2][3] = { {1, 2, 3}, {4, 5, 6} };
-    int **p;   // 定义一个指向指针的指针变量
-    int i, j;
-
-    // 将二级指针指向二维数组的第一个元素的地址
-    p = (int **)arr;
-
-    // 使用二级指针来遍历二维数组
-    for (i = 0; i < 2; i++) {
-        for (j = 0; j < 3; j++) {
-            printf("%d ", *((int *)p + i * 3 + j));
-        }
-        printf("\n");
-    }
-
-    return 0;
+#include<stdio.h>
+int main()
+{
+ float BMI,kg,h;
+ printf("enter h and kg : \n");
+ scanf("%f,%f",&h,&kg);
+ BMI=kg/(h*h);
+ printf("ur BMI : %f\n",BMI);
+ if(BMI<18)
+    printf("flight");
+ else
+ {
+   if(BMI>17&&BMI<25)
+      printf("of middium");
+   else
+   {
+    if(BMI>24&&BMI<28)
+        printf("heavey");
+     else
+        printf("Obisety");
+   } 
+ }
+ return 0;
 }
 
-for (int i = 0; i < n; i++) 
-{
-    char ch = pairs(s[i]);
-    if (ch) 
-    {
-        if (top == 0 || steak[top - 1] != ch) {
-            return false;
-        }
-        top--;
-    } else {
-        steak[top++] = s[i];
-    }
+void create_pointer(char* name) {
+    // 分配内存来存储指针
+    char** ptr = (char**) malloc(sizeof(char*));
+
+    // 复制传入的字符串值到新指针名称中
+    *ptr = strdup(name);
+
+    // 打印新指针名称的值
+    printf("New pointer name: %s\n", *ptr);
+
+    // 释放分配的内存
+    free(*ptr);
+    free(ptr);
+}
+
+int main() {
+    // 传递字符串作为函数参数
+    create_pointer("my_new_pointer");
+
+    return 0;
 }
