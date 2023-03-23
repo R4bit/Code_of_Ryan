@@ -39,51 +39,70 @@ void insertFirst(node *head, int val, int exp)
    new->next = head->next;
 
    head->next = new;
-printf("new node :%d \n" , head->next->val);
-printf("Founc \"insertFirst\" --over\n");
 }
-/*
+
 void traverse(node *L)
 {
+   // reset to the first node instead of the "header".
+   node *ptr = L->next ;
 
-printf("successed!entered into Func traverse \n");	
-   // reset to head
-   node *ptr = L ;
-   //printf("\nhead address: %p\n", head);
+   // print as : [  (....)+(....)+(....)+(....)+ ... ]
    printf("\n[ ");
-printf("successed!entered into Func traverse \n");	
-   //start from the beginning
-   while(ptr != NULL) 
+   
+   while(ptr) 
    {
-      printf("(%d*X^%d ,%p) ",ptr->val,ptr->exp,ptr->next);
-      //printf("(%d,%d) ",ptr->key,ptr->data);
-      ptr = ptr->next;
-printf("traverse: a spot over\n");
-   }
-	//end at the last node
 
+      if(ptr->val > 0 )
+      printf("(%d*X^%d)" , ptr->val , ptr->exp );
+      else if(ptr->val < 0 )
+      printf("((%d)*X^%d)" , ptr->val , ptr->exp );
+      // case coefficient == 0 :
+      else 
+      {}
+      // Judge --> find the right place to add " + "
+      if(ptr ->next && ptr->val != 0 )  printf("+");
+      // go on
+      ptr = ptr->next;
+
+   }
+   // over
    printf(" ]");
 }
-*/
+
 int main()
 {
    //initialize three headers of three polynomials.
    node *A , *B , *C ;
    A = (node*)malloc(sizeof(node*));
-   initialize(A);
-printf("hello!\n");
+   B = (node*)malloc(sizeof(node*));
+   C = (node*)malloc(sizeof(node*));
+   initialize(A),initialize(B),initialize(C);
+   
    insertFirst(A,5,5);
-printf("hello!\n");
    insertFirst(A,4,4);
-printf("hello!\n");
    insertFirst(A,3,3);
-printf("hello!\n");
    insertFirst(A,2,2);
    insertFirst(A,1,1);
-printf("successed! \n");
-printf("%d \n" , *A->next->next );
-printf("successed! \n");//4
-   free(A);
-   //traverse(A);
+  
+   traverse(A);
+   printf("\ninit A over \n");
 
+   insertFirst(B,1,1);
+   insertFirst(B,2,2);
+   insertFirst(B,3,3);
+   insertFirst(B,0,4);
+   insertFirst(B,0,5);
+
+   traverse(B);
+   printf("\ninit B over \n");
+   
+   insertFirst(C,-1,1);
+   insertFirst(C,-2,2);
+   insertFirst(C,-3,3);
+   insertFirst(C,-4,4);
+   insertFirst(C,-5,5);
+
+   traverse(C);
+   printf("\ninit C over \n");
+   
 }
