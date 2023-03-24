@@ -1,2 +1,7 @@
 # Code_of_renyvan
-studing code at year 2023 mainly.
+Learning process ... maybe as a diary ? Alright , feel free talking......
+
+2023.3.23 ~ 2023.3.24  A unusual crumble occours to my computer.....noised me entir day... 
+                       but i conquered it by countless remake my code.
+                       just change defination of " *node " at the initial structure.
+                       rest,rest, need to rest forward......expecting robots of Dr. Fu afternoon.
