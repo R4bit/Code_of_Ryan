@@ -56,52 +56,83 @@ void traverse(node* head)
    printf(" ]");
 }
 
+node* add(node* A, node* B)
+{
+   node* neww = NULL;
+   node* ptr1 = A;
+   node* ptr2 = B;
+
+   while(ptr1 && ptr2 )
+   {
+      if(ptr1->exp == ptr2->exp)
+      {
+         insertFirst(&neww,ptr1->val+ptr2->val,ptr1->exp);
+         ptr1 = ptr1->next;
+         ptr2 = ptr2->next;
+      }
+      else if(ptr1->exp > ptr2->exp)
+      {
+         insertFirst(&neww,ptr1->val,ptr1->exp);
+         ptr1 = ptr1->next;
+      }
+      else
+      {
+         insertFirst(&neww,ptr2->val,ptr2->exp);
+         ptr2 = ptr2->next;
+      }
+   }
+
+   while(ptr1)
+   {
+      insertFirst(&neww,ptr1->val,ptr1->exp);
+      ptr1 = ptr1->next;
+   }
+
+   while(ptr2)
+   {
+      insertFirst(&neww,ptr2->val,ptr2->exp);
+      ptr2 = ptr2->next;
+   }
+   return neww;
+}
 int main()
 {
    node* A , *B , *C , *result ;
-   A = (node*)malloc(sizeof(node));
-   B = (node*)malloc(sizeof(node));
-   C = (node*)malloc(sizeof(node));
-   result = (node*)malloc(sizeof(node));
-   
    A = NULL;
    B = NULL;
    C = NULL;
    result = NULL;
 
 
-   insertFirst(&A,5,5);
-   insertFirst(&A,4,4);
+   insertFirst(&A,5,1);
+   insertFirst(&A,4,2);
    insertFirst(&A,3,3);
-   insertFirst(&A,2,2);
-   insertFirst(&A,1,1);
+   insertFirst(&A,2,4);
+   insertFirst(&A,1,5);
   
    traverse(A);
    printf("\ninit A over \n");
 
-   insertFirst(&B,1,1);
-   insertFirst(&B,2,2);
-   insertFirst(&B,3,3);
+   insertFirst(&B,-50,1);
+   insertFirst(&B,4,2);
+   insertFirst(&B,0,3);
    insertFirst(&B,0,4);
-   insertFirst(&B,0,5);
+   insertFirst(&B,-3,5);
 
    traverse(B);
    printf("\ninit B over \n");
    
-   insertFirst(&B,-1,1);
-   insertFirst(&B,-2,2);
-   insertFirst(&B,-3,3);
-   insertFirst(&B,9,4);
-   insertFirst(&B,0,5);
+   C = add(A , B);
+   traverse(C);
 
-   traverse(B);
-   printf("\ninit B over \n");
-   
-   
-  // add(A,B,result);
-  // traverse(result);free(A);
-free(B);
-free(C);
-free(result);
+   result = add(C , A);
+   traverse(result);
 
+   free(A);
+   free(B);
+   free(C);
+   free(result);
+   
+   //only be able to add two decending order polynomials.....
+   //need a founction to combine the similar items..
 }
