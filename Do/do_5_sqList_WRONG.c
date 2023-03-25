@@ -57,13 +57,6 @@ int Length(list *L)
 {
     return L->length;
 }
-int Length2(int arr[])
-{
-   int len ;
-   len = sizeof(arr) / sizeof(arr[0]) ;
-   return len ;
-}
-
 void Locate(list *L )
 {
     int e;

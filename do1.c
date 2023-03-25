@@ -7,42 +7,56 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct node1
+typedef struct node
 {
    int val;
    int exp;
-   struct node1 *next;
-}node1 , *node;
+   struct node* next;
+}node;
 
-void insertFirst(node head, int val, int exp)
+void insertFirst(node** head, int val, int exp)
 {
-   // new node
-   node neww = (node) malloc(sizeof(struct node1));
-   if(neww == NULL){
-      printf("malloc wrong ! \n");
+   // check if the head pointer is NULL
+   if(head == NULL){
+      printf("head is NULL! \n");
       return ;
    }
-   neww->val = val;
-   neww->exp = exp;
-   neww->next = NULL;
-   if(head = NULL){
-      head = neww;
-      return ;
-   }else{
-      neww->next = head;
-      head = neww;
+
+   // check if the linked list is empty
+   if(*head == NULL){
+      // allocate memory for the head node
+      *head = (node*) malloc(sizeof(struct node));
+      if(*head == NULL){
+         printf("malloc wrong ! \n");
+         return ;
+      }
+      (*head)->val = val;
+      (*head)->exp = exp;
+      (*head)->next = NULL;
+   }
+   else{
+      // allocate memory for the new node
+      node* neww = (node*) malloc(sizeof(struct node));
+      if(neww == NULL){
+         printf("malloc wrong ! \n");
+         return ;
+      }
+      neww->val = val;
+      neww->exp = exp;
+      neww->next = *head;
+      *head = neww;
    }
 }
 
-void traverse(node head)
+void traverse(node* head)
 {
-   // reset to the first node instead of the "header".
-   node ptr = head ;
+   // reset to the first node* instead of the "header".
+   node* ptr = head ;
 
    // print as : [  (....)+(....)+(....)+(....)+ ... ]
    printf("\n[ ");
    
-   while(ptr) 
+   while(ptr != NULL) 
    {
 
       if(ptr->val > 0 )
@@ -63,23 +77,23 @@ void traverse(node head)
    printf(" ]");
 }
 /*
-void add(node A , node B , node result) // need to add at tail when constructing "result".
+void add(node* A , node* B , node* result) // need to add at tail when constructing "result".
 {
    //init head of "result" :
-   result = malloc(sizeof(struct node1));
+   result = malloc(sizeof(struct node*1));
    result->val = result->exp = 0 ;
    result->next = NULL ;
 
-   node p1 = A->next , p2 = B->next ;
+   node* p1 = A->next , p2 = B->next ;
 
    while(p1 || p2) // which means need to go on.
    {
-    // init a node at first to provide space to operate :
-    node new = malloc(sizeof(struct node1));
+    // init a node* at first to provide space to operate :
+    node* new = malloc(sizeof(struct node*1));
     new->val = new->exp = 0 ;
     new->next = NULL ;
     // introduce "tail" :   
-    node tail = malloc(sizeof(struct node1));
+    node* tail = malloc(sizeof(struct node*1));
     tail = result ;
     while(tail)
     tail = tail->next ;  //tail.
@@ -127,42 +141,27 @@ void add(node A , node B , node result) // need to add at tail when constructing
 int main()
 {
    //initialize three headers of three polynomials.
-   node A , B , C , result;
-   /*
-   A = (node)malloc(sizeof(struct node1));
-   B = (node)malloc(sizeof(struct node1));
-   C = (node)malloc(sizeof(struct node1));
-   result = (node)malloc(sizeof(struct node1));
-   initialize(A),initialize(B);
-   initialize(C);
-   */
-   insertFirst(A,5,5);
-   insertFirst(A,4,4);
-   insertFirst(A,3,3);
-   insertFirst(A,2,2);
-   insertFirst(A,1,1);
+   node* A , *B , *C , *result ;
+   A = (node*)malloc(sizeof(node));
+   B = (node*)malloc(sizeof(node));
+   C = (node*)malloc(sizeof(node));
+   result = (node*)malloc(sizeof(node));
+   
+   A->next = NULL;
+   B->next = NULL;
+   C->next = NULL;
+   result->next = NULL;
+
+
+   insertFirst(&A,5,5);
+   insertFirst(&A,4,4);
+   insertFirst(&A,3,3);
+   insertFirst(&A,2,2);
+   insertFirst(&A,1,1);
   
    traverse(A);
    printf("\ninit A over \n");
 
-   insertFirst(B,1,1);
-   insertFirst(B,2,2);
-   insertFirst(B,3,3);
-   insertFirst(B,0,4);
-   insertFirst(B,0,5);
-
-   traverse(B);
-   printf("\ninit B over \n");
-   
-   
-   insertFirst(B,-1,1);
-   insertFirst(B,-2,2);
-   insertFirst(B,-3,3);
-   insertFirst(B,-0,4);
-   insertFirst(B,-0,5);
-
-   traverse(B);
-   printf("\ninit B over \n");
    
   // add(A,B,result);
   // traverse(result);
