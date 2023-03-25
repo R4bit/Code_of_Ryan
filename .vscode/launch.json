@@ -6,13 +6,12 @@
       "type": "cppdbg",
       "request": "launch",
       "args": [],
-      "stopAtEntry": false, // stop run when begining -> better to set break point.
-      "externalConsole": false, // whether to open a new gdb terminal.
-      "cwd": "d:/A_Exclusived/CTF/Code",
-      "program": "D:\\A_Exclusived\\CTF\\Code\\Debug(Put target .exe file here)\\Physics_data_management.exe",
+      "stopAtEntry": false,
+      "externalConsole": true,
+      "cwd": "d:/A_Exclusived/CTF/Code/Debug(Put target .exe file here)",
+      "program": "d:/A_Exclusived/CTF/Code/Debug(Put target .exe file here)/build/Debug/outDebug",
       "MIMode": "gdb",
-      "miDebuggerPath": "D:/A_Exclusived/CTF/MinGW/bin/gdb.exe", // position of debugger "gdb".
-      "preLaunchTask": "C/C++: gcc.exe 生成活动文件",
+      "miDebuggerPath": "gdb",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
