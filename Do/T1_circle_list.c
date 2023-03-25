@@ -18,8 +18,75 @@ struct node
 };
 
 struct node *head = NULL;
-struct node *tail = NULL;   //new -> compared to the first divertion.
+struct node *tail = NULL;   //new -> compared to the first vertion.
 struct node *current = NULL;
+// insert after target position ; 
+struct node* insert(int position , int key , int data )
+{
+   //robustness :
+   if(position < 1 )
+   {
+      printf("WRONG inserting position ! \n") ;
+      return NULL ;
+   }
+   current = head ;
+   struct node* new_node = (struct node*)malloc(sizeof(struct node)) ;
+   new_node->key = key ;
+   new_node->data = data ;
+   new_node->next = NULL ;//initialize over !
+
+   //find target position :
+   for(int i = 1 ; i < position ; i++ )
+   {  
+      //if "position" is bigger than curcle list ,insert at (position % length).
+      current = current->next ;
+   }
+   //insert operation :
+   new_node->next = current->next ;
+   current->next = new_node ;
+
+}
+//delete a link with given key
+struct node* delete(int key) 
+{
+
+   //start from the first link
+   struct node* current = head;
+   struct node* previous = NULL;
+	
+   //if list is empty
+   if(head == NULL) 
+   {
+      return NULL;
+   }
+
+   // traverse list :
+   while(current->key != key) 
+   {
+      //if it is last node
+      if(current->next == NULL) 
+      {
+         return NULL;
+      } 
+      else 
+      {         // go on :
+         previous = current;
+         current = current->next;
+      }
+   }
+
+   //found a match, update the link
+   if(current == head)  //case that need to delete the first node : just bypass the "head".
+   {
+      head = head->next;
+   }
+   else  // bypass the current link.
+   {  
+      previous->next = current->next;
+   }    
+	
+   return current;
+}
 
 bool isEmpty() 
 {
@@ -60,7 +127,7 @@ void insertFirst(int key, int data)
    if (isEmpty()) 
    {
       head = link;
-      head->next = head;
+      head->next = head;//curcle !
       tail = head;
    } 
    else 
@@ -72,7 +139,7 @@ void insertFirst(int key, int data)
       head = link;
 
       //update tail node
-      tail->next = head;
+      tail->next = head; //curcle !
    }  
    //printf("%p,%d,%d,%p\n",link,link->data,link->key,link->next);
    //printf("current head: %p\n",head);
@@ -136,22 +203,20 @@ int main()
    insertFirst(4,40);
    insertFirst(5,50);
    insertFirst(6,60); 
-
    printf("Original List: "); 
-	
-   //print list
    printList();
+   printf("\n\n");
 
-   
-   while(!isEmpty()) {            
-      struct node *temp = deleteFirst();
-      printf("\nDeleted value:");  
-      printf("(%d,%d) ",temp->key,temp->data);
-   }   
-	
-   printf("\nList after deleting all items: ");
+   delete(5);
+   printf("\nList after deleting an item: ");
    printList();
+   printf("\n\n");
    
+   insert(3 , 100 , 100); //insert after 3th node .
+   printf("\nList after inserting an item: ");
+   printList();
+   printf("\n\n");   
+ 
    return 0;
 }
 
