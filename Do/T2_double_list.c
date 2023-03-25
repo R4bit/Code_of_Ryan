@@ -13,9 +13,9 @@ struct node
 {
    int data;
    int key;
-	
+
+	struct node *prev;
    struct node *next;
-   struct node *prev;
 };
 
 //this link always point to first Link
@@ -23,7 +23,6 @@ struct node *head = NULL;
 
 //this link always point to last Link 
 struct node *last = NULL;
-
 struct node *current = NULL;
 
 //is list empty
@@ -58,17 +57,14 @@ void displayForward()
    while(ptr != last) 
    {     
       //print data   
-      printf("(%d,%d) ",ptr->key,ptr->data);
+      printf("(%p,%d,%d,%p) ",ptr->prev , ptr->key,ptr->data , ptr->next);
       //printf("(%p,%p,%d,%d,%p) ",ptr->prev,ptr,ptr->key,ptr->data,ptr->next);
       
       //traverse forward to next node
       ptr = ptr->next;
    }
+      printf("(%p,%d,%d,%p) ",last->prev , last->key,last->data , last->next);
 	
-   //print the last node
-   printf("(%d,%d) ",ptr->key,ptr->data);
-   //printf("(%p,%p,%d,%d,%p) ",ptr->prev,ptr,ptr->key,ptr->data,ptr->next);
-
    printf(" ]\n");
 }
 
@@ -85,7 +81,7 @@ void displayBackward()
    while(ptr != head) 
    {
       //print data
-      printf("(%d,%d) ",ptr->key,ptr->data);
+      printf("(%p,%d,%d,%p) ",ptr->prev,ptr->key,ptr->data,ptr->next);
       //printf("(%p,%p,%d,%d,%p) ",ptr->prev,ptr,ptr->key,ptr->data,ptr->next);
 		
       //traverse backward to next node
@@ -93,7 +89,7 @@ void displayBackward()
    }
    
    //print the first node
-   printf("(%d,%d) ",ptr->key,ptr->data);
+   printf("(%p,%d,%d,%p) ",head->prev,head->key,head->data,head->next);
    //printf("(%p,%p,%d,%d,%p) ",ptr->prev,ptr,ptr->key,ptr->data,ptr->next);
 
    printf(" ]\n");
@@ -110,20 +106,20 @@ void insertFirst(int key, int data)
 	
    if(isEmpty()) 
    {
-      //make it the last link
+      link->next = link ;
+      link->prev = link ;
+      head = link;
       last = link;
    } 
    else 
    {
-      //update first prev link
+      link->next = head;
+      last->next = link;
       head->prev = link;
+      link->prev = last;
+      head = link ;
    }
 
-   //point it to old first link
-   link->next = head;
-	
-   //point first to new first link
-   head = link;
 }
 
 //insert link at the last location
@@ -137,36 +133,39 @@ void insertLast(int key, int data)
 	
    if(isEmpty()) 
    {
-      //make it the last link
+      link->next = link;
+      link->prev = link;
+      head = link;
       last = link;
    } 
    else 
    {
-      //make link a new last link
-      last->next = link;     
-      
-      //mark old last node as prev of new link
+      link->next = head;
+      last->next = link;
       link->prev = last;
+      head->prev = link;
+      last = link ;     
    }
-
-   //point last to new last node
-   last = link;
 }
 
 //delete first item
 struct node* deleteFirst() 
 {
+   if(head == NULL)
+   return NULL ;
    //save reference to first link
    struct node *tempLink = head;
 	
    //if only one link
-   if(head->next == NULL)
+   if(head == last)
    {
-      last = NULL;
+      last = NULL,head = NULL ; //delete the only node .
    } 
    else 
    {
-      head->next->prev = NULL;
+      last->next = head->next;
+
+      head->next->prev = head->prev; //which means drop "head" node.
    }
 	
    head = head->next;
@@ -179,18 +178,25 @@ struct node* deleteFirst()
 
 struct node* deleteLast() 
 {
-   //save reference to last link
+   if(head == NULL)
+   return NULL ;
+   //save reference to first link
    struct node *tempLink = last;
 	
    //if only one link
-   if(head->next == NULL) {
-      head = NULL;
-   } else {
-      last->prev->next = NULL;
+   if(head == last)
+   {
+      last = NULL,head = NULL ; //delete the only node .
+   } 
+   else 
+   {
+      head->prev = last->prev;
+      
+      last->prev->next = last->next; //which means drop "head" node.
    }
 	
    last = last->prev;
-	
+
    //return the deleted link
    return tempLink;
 }
@@ -290,7 +296,7 @@ bool insertAfter(int key, int newKey, int data)
    //insert inside the list 
    else 
    {
-      newLink->next = current->next;         
+      newLink->next = current->next;     
       current->next->prev = newLink;
    }
    newLink->prev = current; 
@@ -310,16 +316,13 @@ void main()
    insertFirst(5,50);
    insertFirst(6,60); 
 
-   //traverse forward
    printf("\nTraversing the Double Linked List (First to Last): ");  
    displayForward();
 	
-   //traverse backward
    printf("\n");
    printf("\nTraversing the Double Linked List (Last to first): "); 
    displayBackward();
 
-   //deletion
    printf("\nList---after deleting first node: ");
    
    struct node *temp = deleteFirst();
