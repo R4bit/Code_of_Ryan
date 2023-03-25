@@ -1,48 +1,41 @@
-/*
-【实验题 3】编写链表实现两个多项式相加算法，两个多项式自己定义。
-*/
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct node1
+typedef struct node
 {
    int val;
    int exp;
-   struct node1 *next;
-}node1 , *node;
+   struct node* next;
+}node;
 
-void insertFirst(node head, int val, int exp)
+void insertFirst(node** head, int val, int exp)
 {
-   // new node
-   node neww = (node) malloc(sizeof(struct node1));
+   // new node*
+   node* neww = (node*) malloc(sizeof(struct node));
+
    if(neww == NULL){
       printf("malloc wrong ! \n");
       return ;
    }
+
    neww->val = val;
    neww->exp = exp;
-   neww->next = NULL;
-   if(head = NULL){
-      head = neww;
-      return ;
-   }else{
-      neww->next = head;
-      head = neww;
-   }
+   neww->next = *head;
+   *head = neww;
 }
 
-void traverse(node head)
+void traverse(node* head)
 {
-   // reset to the first node instead of the "header".
-   node ptr = head ;
+   // reset to the first node* instead of the "header".
+   node* ptr = head ;
 
    // print as : [  (....)+(....)+(....)+(....)+ ... ]
    printf("\n[ ");
    
-   while(ptr) 
+   while(ptr != NULL) 
    {
 
       if(ptr->val > 0 )
@@ -62,110 +55,53 @@ void traverse(node head)
    // over
    printf(" ]");
 }
-/*
-void add(node A , node B , node result) // need to add at tail when constructing "result".
-{
-   //init head of "result" :
-   result = malloc(sizeof(struct node1));
-   result->val = result->exp = 0 ;
-   result->next = NULL ;
 
-   node p1 = A->next , p2 = B->next ;
-
-   while(p1 || p2) // which means need to go on.
-   {
-    // init a node at first to provide space to operate :
-    node new = malloc(sizeof(struct node1));
-    new->val = new->exp = 0 ;
-    new->next = NULL ;
-    // introduce "tail" :   
-    node tail = malloc(sizeof(struct node1));
-    tail = result ;
-    while(tail)
-    tail = tail->next ;  //tail.
-
-    // p1 longer :
-    if(p1 && !p2)
-    {
-        new->val = p1->val ;
-        new->exp = p1->exp ;
-        new->next = NULL ;
-    // put new to tail of "result" :
-        tail->next = new ;
-        tail = new ;
-        p1 = p1->next ;
-    }
-    // p2 longer :
-    else if(p2 && !p1)
-    {
-        new->val = p2->val ;
-        new->exp = p2->exp ;
-        new->next = NULL ;
-    // put new to tail of "result" :
-        tail->next = new ;
-        tail = new ;
-        p2 = p2->next ;
-    }
-    // normal case , excute add opreation :
-    else
-    {
-    // assignment :
-        new->val = p1->val + p2->val ;
-        new->exp = p1->exp ;
-        new->next = NULL ;
-    // put new to tail of "result" :
-        tail->next = new ;
-        tail = new ;
-    
-        p1 = p1->next ;
-        p2 = p2->next ;
-        
-    }
-   }
-}
-*/
 int main()
 {
-   //initialize three headers of three polynomials.
-   node A , B , C , result;
-   /*
-   A = (node)malloc(sizeof(struct node1));
-   B = (node)malloc(sizeof(struct node1));
-   C = (node)malloc(sizeof(struct node1));
-   result = (node)malloc(sizeof(struct node1));
-   initialize(A),initialize(B);
-   initialize(C);
-   */
-   insertFirst(A,5,5);
-   insertFirst(A,4,4);
-   insertFirst(A,3,3);
-   insertFirst(A,2,2);
-   insertFirst(A,1,1);
+   node* A , *B , *C , *result ;
+   A = (node*)malloc(sizeof(node));
+   B = (node*)malloc(sizeof(node));
+   C = (node*)malloc(sizeof(node));
+   result = (node*)malloc(sizeof(node));
+   
+   A = NULL;
+   B = NULL;
+   C = NULL;
+   result = NULL;
+
+
+   insertFirst(&A,5,5);
+   insertFirst(&A,4,4);
+   insertFirst(&A,3,3);
+   insertFirst(&A,2,2);
+   insertFirst(&A,1,1);
   
    traverse(A);
    printf("\ninit A over \n");
 
-   insertFirst(B,1,1);
-   insertFirst(B,2,2);
-   insertFirst(B,3,3);
-   insertFirst(B,0,4);
-   insertFirst(B,0,5);
+   insertFirst(&B,1,1);
+   insertFirst(&B,2,2);
+   insertFirst(&B,3,3);
+   insertFirst(&B,0,4);
+   insertFirst(&B,0,5);
 
    traverse(B);
    printf("\ninit B over \n");
    
-   
-   insertFirst(B,-1,1);
-   insertFirst(B,-2,2);
-   insertFirst(B,-3,3);
-   insertFirst(B,-0,4);
-   insertFirst(B,-0,5);
+   insertFirst(&B,-1,1);
+   insertFirst(&B,-2,2);
+   insertFirst(&B,-3,3);
+   insertFirst(&B,9,4);
+   insertFirst(&B,0,5);
 
    traverse(B);
    printf("\ninit B over \n");
+   
    
   // add(A,B,result);
-  // traverse(result);
-  // free(A) , free(B) , free(C) , free(result) ;
+  // traverse(result);free(A);
+free(B);
+free(C);
+free(result);
 
 }
