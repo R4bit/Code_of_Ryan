@@ -19,7 +19,37 @@ struct node
 struct node *head = NULL;
 struct node *current = NULL;
 
+// insert node after target node : enter potision , insert after "position".
+struct node* insert(int position , int key , int data )
+{
+   //robustness :
+   if(position < 1 )
+   {
+      printf("WRONG inserting position ! \n") ;
+      return NULL ;
+   }
+   current = head ;
+   struct node* new_node = (struct node*)malloc(sizeof(struct node)) ;
+   new_node->key = key ;
+   new_node->data = data ;
+   new_node->next = NULL ;//initialize over !
 
+   //find target position :
+   for(int i = 1 ; i < position ; i++ )
+   {
+      if(current->next != NULL)
+         current = current->next ;
+      else  // robustness :
+      {
+         printf("WRONG inserting position ! \n");
+         return NULL ;
+      }
+   }
+   //insert operation :
+   new_node->next = current->next ;
+   current->next = new_node ;
+
+}
 //delete a link with given key
 struct node* delete(int key) 
 {
@@ -145,9 +175,6 @@ void main()
    insertFirst(5,50);
    insertFirst(6,60); 
    insertFirst(7,70);
-   insertFirst(8,80);
-   insertFirst(9,90);
-   insertFirst(10,100);
    
    printf("Original List: "); 
    printList();
@@ -160,12 +187,20 @@ void main()
    printf("\n");
    printf("\n");
 
+   insert(5 , 10086 , 10087) ;
    printf("List after adding an item : ");
    printList();
    printf("\n");
    printf("\n");
+   
+   printf("Robustness testing: When insert at wrong position : \n");
+   insert(10 , 100 , 100) ;
+   insert(-1 , 100 , 100) ;
 
-   printf("deleting and adding operation successfully achieved !!! \n");
+   insert(3 , 123 , 10087) ;
+   printf("\nList after adding an another item : ");
+   printList();
 
+   printf("\n\ndeleting and adding operation successfully achieved !!! \n");
 }
 
