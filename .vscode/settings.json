@@ -36,6 +36,8 @@
   "C_Cpp_Runner.useAddressSanitizer": false,
   "C_Cpp.errorSquiggles": "disabled",
   "files.associations": {
-    "stdbool.h": "c"
+    "stdbool.h": "c",
+    "ostream": "cpp",
+    "iomanip": "cpp"
   }
 }
