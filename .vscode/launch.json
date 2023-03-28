@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/A_Exclusived/CTF/Code/Debug(Put target .exe file here)",
-      "program": "d:/A_Exclusived/CTF/Code/Debug(Put target .exe file here)/build/Debug/outDebug",
+      "cwd": "d:/A_Exclusived/CTF/Code",
+      "program": "d:/A_Exclusived/CTF/Code/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
