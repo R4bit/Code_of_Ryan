@@ -38,8 +38,8 @@ int pop()
 	
    if(!isempty())
    {
-      data = stack[top];
-      top = top - 1;
+      data = stack[top--];
+      //top = top - 1;
       printf("Poping data: %d\n", data);
       return data;
    } 
