@@ -9,12 +9,34 @@ This introduces queue operations in C programming.
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define MAX 6
+int MAX = 6 ;
 
-int intArray[MAX];
+int intArray[6];
+int* arr = &intArray[0] ;
+int* new_arr = NULL ;
 int front = 0;
 int rear = -1;
 int itemCount = 0;
+
+int* increase_length( int* target_arr )  // return "new_arr"
+{
+   int head = front , count = 0 ;
+   int* new_arr = (int*)malloc( (2*MAX) * sizeof(int));
+                                            //index:| 0  1  2  3  4  5 |
+                                               //   | 5  6//1  2  3  4 | MAX=6 ; front=3 ; rare=2 ; 
+   for(int i = 0 ; i < MAX-(front-1) ; i++ , head ++ )   
+   {
+      new_arr[i] = arr[head - 1] ;
+      count ++ ;
+   }
+   for(int i = count , j = 0 ; i < rear ; i++ , j++ )
+   {
+      new_arr[count] = arr[j] ;
+   }
+   
+   MAX *= 2 ;
+   return new_arr ;
+}
 
 int peek()
 {
@@ -36,25 +58,33 @@ int size()
    return itemCount;
 }  
 
-void insert(int data)
+void insert(int data)   //       0  1  2  3  4  5
 {
 
    if(!isFull())
    {
-	
       if(rear == MAX-1)
       {
          rear = -1;
       }       
 
-      intArray[++rear] = data;
+      intArray[++rear] = data;  //redirection to the first location of Array.
       itemCount++;
+   }
+   else
+   {
+      printf("Could not insert data, Array is full.\n");
+
+      new_arr = increase_length( arr );
+
+      printf("Pushing data: %d\n", new_arr[rear] );
+      printf("Stack has been increased ! \n");
    }
 }
 
 int removeData()
 {
-   int data = intArray[front++];
+   int data = intArray[front++]; //the data been poped.
 	
    if(front == MAX)
    {
@@ -78,9 +108,9 @@ int main()
 
    // front : 0
    // rear  : 4
-   // ------------------
-   // index : 0 1 2 3 4 
-   // ------------------
+   // -------------------
+   // index : 0 1 2 3 4 5
+   // -------------------
    // queue : 1 2 3 4 5
    insert(100);
 
@@ -103,9 +133,9 @@ int main()
    // front : 1
    // rear  : 5
    // -------------------
-   // index : 1 2 3 4  5
+   // index : 0 1 2 3 4  5
    // -------------------
-   // queue : 2 3 4 5  100
+   // queue :   2 3 4 5  100
 
    // insert more items
    insert(200);
