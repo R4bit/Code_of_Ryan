@@ -42,7 +42,7 @@ int pop()
 	
    if(!isempty())
    {
-      data = stack[top--];
+      data = ptr_stack[top--];
       //top = top - 1;
       printf("Poping data: %d\n", data);
       return data;
@@ -54,14 +54,14 @@ int pop()
 }
 int* increase_length( int* target_stack )
 {
-   int* new_stack = (int*)malloc( 2*MAXSIZE * sizeof(int));
+   int* new_stack = (int*)malloc( (2*MAXSIZE) * sizeof(int));
    
    for(int i = 0 ; i < MAXSIZE ; i++ )
    {
       new_stack[i] = stack[i] ;
      // printf("%d  " , new_stack[i]);
    }
-
+   
    MAXSIZE *= 2 ;
    return new_stack ;
 }
@@ -89,7 +89,7 @@ void push(int data)
       printf("Stack has been increased ! \n");
    }
 }
-/*
+
 void traverse(int* p)
 {
 
@@ -99,33 +99,16 @@ void traverse(int* p)
    }
    printf("\n");
 }
-*/
+
 int main() {
    // push items on to the stack 
-   push(1);
-   push(2);
-   push(3);
-   push(4);
-   push(5);
-   push(6);
-   push(7);
-   push(8);
-//   traverse(ptr_new);
-   push(9);
-//   traverse(ptr_new);
-   push(10);
-   push(11);
-   push(12);
-   push(13);
-   push(14);
-   push(15);
-   push(16);
-   push(17);
-   push(18);
-   push(19);
-   push(20);
-   push(21);
 
+   for(int i = 0 ; i < 30 ; i++)
+   {
+      push(i);
+   }
+   
+   
    printf("Stack full: %s\n", isfull()?"true":"false");
    printf("Stack empty: %s\n", isempty()?"true":"false");
 
@@ -140,6 +123,7 @@ int main() {
    printf("Stack full: %s\n", isfull()?"true":"false");
    printf("Stack empty: %s\n", isempty()?"true":"false");
    
+   //traverse(ptr_stack) ;
    return 0;
 }
 

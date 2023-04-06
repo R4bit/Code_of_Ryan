@@ -59,7 +59,8 @@ void traverse(node* head)
 node* add(node* A, node* B)
 {
    node* neww = NULL;
-   node* ptr1 = A;
+   node* ptr1 = A;  // Known the adress of pointer "A" , then easily can know the content of "A",
+                    // which is the adress of content in pointer "A" .
    node* ptr2 = B;
 
    while(ptr1 && ptr2 )
@@ -104,7 +105,7 @@ int main()
    result = NULL;
 
 
-   insertFirst(&A,5,1);
+   insertFirst(&A,5,1);// &A : the adress of pointer "A".
    insertFirst(&A,4,2);
    insertFirst(&A,3,3);
    insertFirst(&A,2,4);
