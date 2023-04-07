@@ -24,8 +24,8 @@ typedef struct tree_node{
 
 void traverse( tree_node* target_node )
 {
+    printf( "%d\t" , target_node->element ) ;
     tree_node* temp = target_node->head ;
-    printf("%d\t" , target_node->element ) ;
     if(temp){
         traverse(temp->node) ;
         temp = temp->next ;
