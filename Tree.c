@@ -22,6 +22,16 @@ typedef struct tree_node{
     int node_count ;
 }tree_node ;
 
+void traverse( tree_node* target_node )
+{
+    tree_node* temp = target_node->head ;
+    printf("%d\t" , target_node->element ) ;
+    if(temp){
+        traverse(temp->node) ;
+        temp = temp->next ;
+    }
+}
+
 // this Founction will add a children node for target node:  (baasic founction)
 tree_node* increase_node(tree_node* target_node , int data ) // data will be assign to value in children node of "node".
 {
