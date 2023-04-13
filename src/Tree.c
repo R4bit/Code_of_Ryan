@@ -22,11 +22,14 @@ typedef struct tree_node{
     int node_count ;
 }tree_node ;
 
+// Traverse---------Using recursion 
 void traverse( tree_node* target_node )
 {
     printf( "%d\t" , target_node->element ) ;
-    tree_node* temp = target_node->head ;
-    if(temp){
+    linking_node* temp = target_node->head ;
+    
+    while(temp)
+    {
         traverse(temp->node) ;
         temp = temp->next ;
     }
@@ -149,6 +152,8 @@ int main()
 
     tree_node* a1b1c1 = increase_node( a1b2 , 70 ) ;
     tree_node* a3b1c1 = increase_node( a3b1 , 80 ) ; // layer 4
+
+    printf("\n") , traverse(root) , printf("\n\n")  ;
     
     // detect element in node :x
     printf("a1 :     %d \n" , a1->element );       // 10
@@ -175,6 +180,8 @@ int main()
     printf("Attach a3 tree to a2 node : \n") ;    
     attach( a2 , a3 ) ; // attach a1 tree to a2 node !
     printf("Having extended a2 tree !\nnow : a2--a3--a3b1--a3b1c1 ! " ) ;
+    
+    printf("\n") , traverse(root) , printf("\n\n")  ;
 
     free(root),free(a1),free(a2),free(a3),free(a1b1),free(a1b2),free(a3b1),free(a1b1c1),free(a3b1c1);
     return 0 ;
