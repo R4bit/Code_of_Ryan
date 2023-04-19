@@ -8,7 +8,7 @@ This introduces simple implementations of recursion functions in C programming.
 #include <stdlib.h>
 
 // a function calling itself
-int function(int value) 
+void function(int value) 
 {
    if(value < 1)
       return;
@@ -18,14 +18,14 @@ int function(int value)
 }
 
 // a function that calls another function which in turn calls it again
-int function1(int value1) 
+void function1(int value1) 
 {
    if(value1 < 1)
       return;
    function2(value1 - 1);
    printf("%d ",value1);   
 }
-int function2(int value2) 
+void function2(int value2) 
 {
    function1(value2);
 }
@@ -34,11 +34,14 @@ int main()
 {
    printf("A function calls itself: \n");
    function(10);
+   printf("\n\n");
+
+   printf("Two functions call each other: \n");
+   function1(50); // understood
    printf("\n");
    printf("Two functions call each other: \n");
-   function1(50);
-   printf("\n");
-   function2(100);
+   function2(50); // understood
+   printf("\n\n");
 
    return 0;
 }

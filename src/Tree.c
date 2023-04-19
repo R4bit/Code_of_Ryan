@@ -1,24 +1,26 @@
 /*
-     ^ _ ^
+    Version 2.0
     Wellcome to My Procedure which shows rudimentary operation of TREE DATA STRUCTURE
     Author : Renyavn Liu
     Time : April , 2023 .
+
+    Updated in version 2.0 :
+    1. line 128 , 134 , 135 recorrect inserting operation.
+    2. structure changed : add "next" node at "struct tree_node" --> cancle "struct linking_node"
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct linking_node{
-    struct linking_node* next ; // points to the next node in linked list , content of which is adress of another tree_node.
-    struct tree_node* node ; // points to a tree_node.
-}linking_node ;
-
 typedef struct tree_node{
     int element ;
     struct tree_node* parent ; // points to parent node of this tree_node.
-    struct linking_node* head ;
-    struct linking_node* tail ;
+    
+    struct tree_node* head ; // points to first son node
+    struct tree_node* tail ; // points to last son node
+
+    struct tree_node* next ; // points to brother node
     int node_count ;
 }tree_node ;
 
@@ -121,13 +123,14 @@ void attach( tree_node* father , tree_node* son )
     linking_node* new_linking_node = (linking_node* )malloc( sizeof(linking_node) ) ;
     new_linking_node->next = NULL ;
     new_linking_node->node = son ; // initialize new_linking_node.
+    son->parent = father ;
 
     if (father->tail == NULL || father->head == NULL){ // only judge tail or head either OK.
         father->head = new_linking_node ;
         father->tail = new_linking_node ;
     }else{
-        father->tail->next->node = son ;
-        father->tail->node = son ; // Operation complextion = O(1) ;
+        father->tail->next = new_linking_node ;
+        father->tail = father->tail->next ;// Operation complextion = O(1) ;
     }
     father->node_count ++ ;
 }

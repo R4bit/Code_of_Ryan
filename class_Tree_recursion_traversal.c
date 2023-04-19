@@ -5,11 +5,12 @@ This introduces an implementation of tree creation and traversal in C programmin
 1. in-order traversal
 2. pre-order traversal
 3. post-order traversal
-<page 128 in your book>
 */
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#define SIZE 10
 
 struct node 
 {
@@ -23,7 +24,8 @@ struct node
 
 struct node *root = NULL;
 
-void insert(int data) {
+void insert(int data)
+{
    struct node *tempNode = (struct node*) malloc(sizeof(struct node));
    struct node *current;
    struct node *parent;
@@ -52,7 +54,7 @@ void insert(int data) {
             current = current->leftChild;
             
             //insert to the left
-            if(current == NULL) // to judge whether old current_node is leaf or not.
+            if(current == NULL)
             {
                parent->leftChild = tempNode;
                return;
@@ -63,7 +65,8 @@ void insert(int data) {
             current = current->rightChild;
 
             //insert to the right
-            if(current == NULL) {
+            if(current == NULL)
+            {
                parent->rightChild = tempNode;
                return;
             }
@@ -71,6 +74,22 @@ void insert(int data) {
       }
    }
 }
+
+// insert a node with data as argument, at any leaf nodes
+struct node* insectAtLeaf(int data)
+{}
+
+// delete a node with data as argument
+struct node* deleteNode(int data)
+{}
+
+// find the size of a tree
+int size()
+{}
+
+// return the size of a tree
+int height()
+{}
 
 struct node* search(int data)
 {
@@ -136,14 +155,14 @@ void post_order_traversal(struct node* root)
 int main()
 {
    int i;
-   int array[7] = { 27, 14, 35, 10, 19, 31, 42 };
+   int array[SIZE] = { 10, 11, 20, 22, 30, 33, 40, 44, 50, 55 };
 
-   for(i = 0; i < 7; i++)
+   for(i = 0; i < SIZE; i++)
       insert(array[i]);
 
    printf("%d root\n", root->data);
 
-   i = 31;
+   i = 11;
    struct node * temp = search(i);
 
    if(temp != NULL)
@@ -156,7 +175,7 @@ int main()
       printf("[ x ] Element not found (%d)....\n", i);
    }
 
-   i = 16;
+   i = 66;
    temp = search(i);
 
    if(temp != NULL)
