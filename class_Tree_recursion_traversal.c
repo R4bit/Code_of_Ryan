@@ -174,7 +174,7 @@ int main()
    {
       printf("[ x ] Element not found (%d)....\n", i);
    }
-
+ 
    i = 66;
    temp = search(i);
 
