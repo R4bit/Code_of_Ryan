@@ -12,7 +12,7 @@ This introduces an implementation of tree creation and traversal in C programmin
 
 #define SIZE 10
 
-struct node 
+typedef struct node 
 {
    //node data stored
    int data; 
@@ -20,7 +20,7 @@ struct node
    //children pointers
    struct node *leftChild;
    struct node *rightChild;
-};
+}node ;
 
 struct node *root = NULL;
 
@@ -79,9 +79,68 @@ void insert(int data)
 struct node* insectAtLeaf(int data)
 {}
 
+// RECURTION version of founction "search" !
+struct node* recursion_search(node* target_node , int num) // attempt to find num from node's son_node.
+{
+   if(target_node == NULL ){
+      return NULL ;
+   }
+
+   struct node* temp = target_node ;
+
+   if (temp->data == num ){
+      return temp ; // Final return at here.
+   }else if(temp->leftChild || temp->rightChild){
+
+      if(temp->leftChild){
+         recursion_search(temp->leftChild , num ) ;
+      }else{
+         recursion_search(temp->rightChild , num ) ;
+      }
+   }
+
+}
+
+// return target_node's parents , and their relationship such as "leftChild"
+struct node* FindParent(node* target_node , int num) // attempt to find num from node's son_node.
+{
+   if(target_node == NULL ){
+      return NULL ;
+   }
+
+   struct node* parent = target_node ; // this node is used for saving position of parent , which is convenient to RETURN.
+
+   if(parent->leftChild->data == num || parent->rightChild->data == num){
+      return parent ;
+   }else if(parent->leftChild || parent->rightChild){
+
+      if(parent->leftChild){
+         recursion_search(parent->leftChild , num ) ;
+      }else{
+         recursion_search(parent->rightChild , num ) ;
+      }
+   }
+
+}
+
 // delete a node with data as argument
-struct node* deleteNode(int data)
-{}
+struct node* deleteNode(int num)
+{
+   node* parent = FindParent(root , num) ; // have found the parent node that need to be operated, and allocate it to node named "parent"
+   node* deleted_node = (node* )malloc(sizeof(node*) ) ; // to store position of deleted_son_node.
+
+   if(parent->leftChild){
+      if(parent->leftChild->data == num){
+         deleted_node = parent->leftChild ;
+         parent->leftChild = NULL ;
+      }
+   }else{
+      deleted_node = parent->rightChild ;
+      parent->rightChild = NULL ;
+   } 
+
+   return deleted_node ;
+}
 
 // find the size of a tree
 int size()
@@ -196,6 +255,21 @@ int main()
 
    printf("\nPost order traversal: ");
    post_order_traversal(root);
+
+
+   
+/*
+   // Founction "find" :
+   node* finded = recursion_search(root , 40 );
+   printf("\n\ndata : \n%d\nposition : \n%d\n\n " , finded->data , &finded ) ;
+   
+   // Founction "delete" :
+   node* deleted_Node = (node*)malloc(sizeof(node* ) ) ;
+
+   deleted_Node = deleteNode(33) ;
+
+   pre_order_traversal(root ) ;
+*/
 
    return 0;
 }
