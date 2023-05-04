@@ -177,6 +177,27 @@ node* recursion_search(node* target_node , int num)
 
 }
 
+// Simplified Recurtion version.
+node* recurtion_search2(node* target_node , int num) 
+{
+   if(target_node == NULL ){
+      return NULL ;
+   }else if(target_node->data == num ){
+      return target_node ;
+   }else{
+      node* left_searcher = recurtion_search2(target_node->leftChild , num ) ; // Core 
+
+      if(left_searcher){
+         return left_searcher ;
+      }else{
+         return recurtion_search2(target_node->rightChild , num) ;
+      }
+      return NULL ;
+   }
+
+   return NULL ;
+}
+
 // Math method version of founction "search" : input index of array , output corresponding node in the tree.
 // this algorithm is better than "recurtion_search".
 // Using stack.
@@ -473,10 +494,16 @@ int main()
 
    // Founction "height" :
    printf("\n\nFounction 'height'  :\n" ) ;
-   printf("Height of this tree is : %d \n" , height(Array_Transformed_Tree ) ) ;
+   printf("Height of this tree is : %d " , height(Array_Transformed_Tree ) ) ;
+
+
+   // Founction "recurtion_search2" :
+   printf("\n\nFounction 'recurtion_search2'  :\n") ;
+   node* temp3 = recurtion_search2(Array_Transformed_Tree , 13 ) ;
+   printf("Element : %d founded \n\n" , temp3->data ) ;
+
 
    // Demostration over ...
-
    return 0;
 }
 
