@@ -47,14 +47,14 @@ int main()
 // creating a new node of tree
 struct node* create(int data)
 {
-    struct node* new_node = (struct node*) malloc (sizeof(struct node));
+    struct node* new_node = (struct node*)malloc (sizeof(struct node ) );
  
     // memory error handled
-    if (new_node == NULL)
-    {
+    if (new_node == NULL){
         printf("\nMemory can't be allocated\n");
         return NULL;
     }
+    // initialize :
     new_node->data = data;
     new_node->left = NULL;
     new_node->right = NULL;
@@ -73,8 +73,8 @@ struct node* rotate_left(struct node* root)
     root->ht = height(root);
     right_child->ht = height(right_child);
  
-    // return the new node after rotation
-    return right_child;
+    // return root after rotation
+    return right_child ; // 
 }
  
 // rotating to the right
@@ -95,17 +95,26 @@ struct node* rotate_right(struct node* root)
 // calculating the balance factor of a node
 int balance_factor(struct node* root)
 {
+    // return root->left->ht - root->right->ht ;
+   
     int lh, rh;
     if (root == NULL)
         return 0;
-    if (root->left == NULL)
+
+    // left height :
+    if (root->left == NULL){
         lh = 0;
-    else
+    }else{
         lh = 1 + root->left->ht;
-    if (root->right == NULL)
+    }
+    // right height :
+    if (root->right == NULL){
         rh = 0;
-    else
+    }else{
         rh = 1 + root->right->ht;
+    }
+
+    // calculate balance_factor :
     return lh - rh;
 }
  
@@ -113,22 +122,25 @@ int balance_factor(struct node* root)
 int height(struct node* root)
 {
     int lh, rh;
-    if (root == NULL)
-    {
+    if (root == NULL) 
         return 0;
-    }
-    if (root->left == NULL)
+
+    // recurtion --> left_height
+    if (root->left == NULL){
         lh = 0;
-    else
+    }else{
         lh = 1 + root->left->ht;
-    if (root->right == NULL)
+    }
+    // recurtion --> right_height
+    if (root->right == NULL){
         rh = 0;
-    else
+    }else{
         rh = 1 + root->right->ht;
- 
-    if (lh > rh)
-        return lh;
-    return rh;
+    } 
+
+    // return Max( lh , rh ) :
+    return lh>rh ? lh : rh ;
+
 }
  
 // inserting a new node in the AVL tree
@@ -136,12 +148,12 @@ struct node* insert(struct node* root, int data)
 {
     if (root == NULL)
     {
-        struct node* new_node = create(data);
+        struct node* new_node = create(data) ;
         if (new_node == NULL)
         {
-            return NULL;
+            return NULL ;
         }
-        root = new_node;
+        root = new_node ; // finally end here.
     }
     else if (data > root->data)
     {
@@ -174,9 +186,9 @@ struct node* insert(struct node* root, int data)
             {
                 root = rotate_right(root);
             }
-            else
+            else // left-right_case
             {
-                root->left = rotate_left(root->left);
+                root->left = rotate_left(root->left); ////////////
                 root = rotate_right(root);
             }
         }
@@ -210,7 +222,7 @@ struct node * delete(struct node *root, int x)
             }
             else
             {
-                root->left = rotate_left(root->left);
+                root->left = rotate_left(root->left); 
                 root = rotate_right(root);
             }
         }
@@ -296,12 +308,12 @@ void inorder(struct node* root)
 {
     if (root == NULL)
     {
-        return;
+        return ;
     }
  
-    inorder(root->left);
-    printf("%d ", root->data);
-    inorder(root->right);
+    inorder(root->left) ;
+    printf("%d ", root->data) ;
+    inorder(root->right) ;
 }
  
 // preorder traversal of the tree
@@ -343,10 +355,10 @@ void selection(void)
         printf("\n1. Insert");
         printf("\n2. Delete");
         printf("\n3. Search");
-        printf("\n4. Inorder");
+        printf("\n\n4. Inorder");
         printf("\n5. Preorder");
         printf("\n6. Postorder");
-        printf("\n7. Exit program");
+        printf("\n\n7. Exit program");
  
         printf("\n\nEnter Your Choice: ");
         scanf("%d", &user_choice);
@@ -392,10 +404,10 @@ void selection(void)
  
             case 7:
                 printf("\n\tProgram terminated\n");
-                return 1;
+                return;
  
             default:
-                printf("\n\tInvalid choice\n");
+                printf("\n\tInvalid choice ! ");
         }
  
         printf("\n\nDo you want to continue? ");
