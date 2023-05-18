@@ -163,10 +163,10 @@ void breadthFirstSearch()
       }
    }
 
-   //queue is empty, search is complete, reset the visited flag        
-   for(i = 0;i<vertexCount;i++)
+   //queue is empty, search is completed, reset the visited flag        
+   for( i = 0 ; i<vertexCount ; i++ )
    {
-      lstVertices[i]->visited = false;
+      lstVertices[i]->visited = false ;
    }
 }
 
