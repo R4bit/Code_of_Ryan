@@ -10,6 +10,13 @@
 
 //用链表构建栈（链表头作为栈顶） ：
 // 第一个栈 ：存放数字
+typedef struct int_list_node
+{
+    int data ;
+    struct int_list_node* next ;
+    
+}int_node;
+
 char stack_char[MAXSIZE];
 int top = -1;
 
