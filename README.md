@@ -14,3 +14,4 @@ Learning process ... maybe as a diary ? Alright , feel like writing , and of cou
                        using two algothms.Math algothm is ...how to say , perfect ,fabulous..so simple , so beautiful.
                        Yesterday i tried an interview about reachering , hoping to do reserch , and , of course ,
                        getting closer to my dream. Always remember : Patience is the Key.
+2023.5.31              Long long time no see....Final work for class of DataStructure...
