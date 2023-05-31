@@ -106,10 +106,10 @@ void addVertex(char label)
    lstVertices[vertexCount++] = vertex ;  // put "node" into its corrensponding array_list
 }
 //add edge, record in the //*adjacency matrix*//
-void addEdge(int start,int end)
+void addEdge( int start , int end )
 {
-   adjMatrix[start][end] = 1;
-   adjMatrix[end][start] = 1;
+   adjMatrix[start][end] = 1 ;
+   adjMatrix[end][start] = 1 ;
 }
 
 //display the vertex
@@ -154,7 +154,7 @@ void breadthFirstSearch()
       //get the unvisited vertex of vertex which is at front of the queue
       int dequeueVertexIndex = removeData() ; // hold dequeue element.
 
-      //no adjacent vertex found
+      //adjacent vertex found
       while( (unvisitedVertex = getAdjUnvisitedVertexIndex(dequeueVertexIndex) ) != NOT_FOUND )
       {    
          lstVertices[unvisitedVertex]->visited = true;
@@ -184,14 +184,15 @@ void depthFirstSearch()
    //push vertex index in stack
    push(0);
 
-   while(!isStackEmpty()) {
+   while( !isStackEmpty() ) 
+   {
       //get the unvisited vertex of vertex which is at top of the stack
-      int unvisitedVertex = getAdjUnvisitedVertexIndex(peek());
+      int unvisitedVertex = getAdjUnvisitedVertexIndex(peek() ) ;
 
       //no adjacent vertex found
       if(unvisitedVertex == -1)
       {
-         pop();
+         pop() ;
       }
       else
       {
@@ -210,21 +211,23 @@ void depthFirstSearch()
 
 int main()
 {
-   int i, j;
-   int choice;
+   int choice ;
 
-   for(i=0; i<MAX; i++) // set adjacency
+   // set adjacency matrix to 0 :
+   for( int i=0 ; i < MAX ; i++ ) 
    {
-      for(j=0; j<MAX; j++) // matrix to 0
+      for( int j=0 ; j < MAX ; j++ )       
          adjMatrix[i][j] = 0;
    }
 
+   // put vertex into an "array" :
    addVertex('A');   // 0
    addVertex('B');   // 1
    addVertex('C');   // 2
    addVertex('D');   // 3
    addVertex('E');   // 4
  
+   // add_Edge "1" element at //*both top and bottom*// traingle part of the matrix : 
    addEdge(0, 1);    // A - B
    addEdge(0, 2);    // A - C
    addEdge(0, 3);    // A - D
@@ -232,17 +235,17 @@ int main()
    addEdge(2, 4);    // C - E
    addEdge(3, 4);    // D - E
 	
-   printf("Your choice (1 breadth-first-search; 2 depth-first-search): ");
-   scanf(" %d", &choice);
+   printf("Your choice( 1 breadth-first-search ; 2 depth-first-search ) : " ) ;
+   scanf("%d", &choice) ;
    switch (choice)
    {
    case 1:
-      printf("\nBreadth First Search: ");
+      printf("\nBreadth First Search:\n");
       breadthFirstSearch();
       break;
       
    case 2:
-      printf("\nDepth First Search: ");
+      printf("\nDepth First Search:\n");
       depthFirstSearch();
       break;
    
@@ -252,9 +255,9 @@ int main()
 
    printf("\n");
    // check adjacency matrix
-   for(i=0; i<MAX; i++)
+   for( int i = 0 ; i < MAX ; i++ )
    {
-      for(j=0; j<MAX; j++)
+      for( int j = 0 ; j < MAX ; j++ )
       {
          printf("%d ", adjMatrix[i][j]);
       }
