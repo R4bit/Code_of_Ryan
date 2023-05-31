@@ -1,19 +1,22 @@
 /*
-作者：刘稔远  信安221
-该C程序展示用 链表 构建 栈，解决 逆波兰表达式解析 问题
+Author: Qinbing Fu
+Date: 2023 Mar
+This introduces expression parsing using stack.
 */
+
 #include<stdio.h>
 #include<string.h>
 #include<ctype.h>
 
 #define MAXSIZE 25
 
-//用链表构建栈（链表头作为栈顶） ：
-// 第一个栈 ：存放数字
+//first stack
+//create char stack
 char stack_char[MAXSIZE];
 int top = -1;
 
-// 第二个栈 ：存放数字
+//second stack
+//create int stack
 int stack_int[MAXSIZE];
 int top_int = -1;
 
@@ -32,7 +35,7 @@ void push_int(int item)
    stack_int[++top_int] = item;
 }
 
-char pop_int()
+int pop_int()
 {
    return stack_int[top_int--];
 }
@@ -151,9 +154,12 @@ int evaluate(char *postfix)
 
    while( (ch = postfix[i++]) != '\0')
    {
-      if(isdigit(ch)){
-	     push_int(ch-'0') ;  // Push the operand
-      }else{
+      if(isdigit(ch))
+      {
+	     push_int(ch-'0');  // Push the operand
+      } 
+      else
+      {
          //Operator,pop two operands
          operand2 = pop_int();
          operand1 = pop_int();
@@ -181,10 +187,10 @@ int evaluate(char *postfix)
 
 void main()
 {
-   char infix[MAXSIZE] = "1*(2+3)*2" , postfix[MAXSIZE];
-   convert(infix,postfix);
-	
-   printf("Infix expression is: %s\n" , infix);
+  //char infix[MAXSIZE] = "1*(2+3)",postfix[MAXSIZE];
+  //convert(infix,postfix);
+	char postfix[MAXSIZE] = "12-3+4+567**-89*+" ;
+  // printf("Infix expression is: %s\n" , infix);
    printf("Postfix expression is: %s\n" , postfix);
    printf("Evaluated expression is: %d\n" , evaluate(postfix));
 }

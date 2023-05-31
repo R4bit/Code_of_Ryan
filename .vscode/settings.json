@@ -85,7 +85,8 @@
     "typeinfo": "cpp",
     "stdlib.h": "c",
     "queue": "c",
-    "ctype.h": "c"
+    "ctype.h": "c",
+    "string.h": "c"
   },
   "C_Cpp_Runner.showCompilationTime": false
 }
