@@ -1,176 +1,174 @@
 /*
-Author: Qinbing Fu
-Date: 2023 May
-This introduces breadth-first and depth-first traversals of graph in C programming.
+作者：刘稔远  信安221
+该C程序展示用 Prim算法 解决 最小生成树 问题
 */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define MAX 5
+#define VERTEX_NUM 12
 #define NOT_FOUND -1 
 
-//function prototypes
-//queue : to hold //*vertex index*//
+//函数声明：
+
+//队列——装载 顶点 的索引
 void insert(int);
 int removeData(void);
 bool isQueueEmpty(void);
-//stack
+//栈
 void push(int);
 int pop(void);
 int peek(void);
 bool isStackEmpty(void);
-//graph
+//图
 void addVertex(char);
 void addEdge(int,int);
-void displayVertex(int);
+void print(int);
 int getAdjUnvisitedVertexIndex(int);
-//traversal
+//广度/深度优先遍历
 void breadthFirstSearch(void);
 void depthFirstSearch(void);
 
 
-//Initialize :
-//queue variables
-int queue[MAX];
+//初始化 数据结构变量
+
+//队列
+int queue[VERTEX_NUM];
 int rear = -1;
 int front = 0;
 int queueItemCount = 0;
-//stack variables
-int stack[MAX];
+//栈
+int stack[VERTEX_NUM];
 int top = -1;
-//graph variables
-//graph vertex struct
-struct Vertex
+//图
+typedef struct Vertex
 {
    char label;
    bool visited;
-};
-//array of vertices
-struct Vertex* lstVertices[MAX] ;
-//adjacency matrix
-int adjMatrix[MAX][MAX] ;
-//vertex count
+}V ;
+
+//顶点计数器
 int vertexCount = 0 ; 
+//数组 装载 顶点
+V* lstVertices[VERTEX_NUM] ;
+//邻接矩阵
+int adjMatrix[VERTEX_NUM][VERTEX_NUM] ;
 
 
-/**************************queue functions************************************/
-//insert item
+/* 队列函数 */
+//入队
 void insert(int data)
 {
    queue[++rear] = data;
    queueItemCount++;
 }
-//remove item
+//出队
 int removeData()
 {
    queueItemCount--;
    return queue[front++]; 
 }
-//check queue empty
+//bool队列是否为空
 bool isQueueEmpty()
 {
    return queueItemCount == 0;
 }
 
-/**************************stack functions************************************/
-//push item
+/* 栈函数 */
+//入栈
 void push(int item)
 { 
-   stack[++top] = item;
+   stack[++top] = item ;
 } 
-//pop item
+//出栈
 int pop()
 { 
-   return stack[top--];
+   return stack[top--] ;
 }
-//top of stack
+//栈顶元素
 int peek()
 {
-   return stack[top];
+   return stack[top] ;
 }
-//check stack empty
+//bool栈是否为空
 bool isStackEmpty()
 {
    return top == -1 ;
 }
 
-/**************************graph functions************************************/
-//add vertex to the vertex list
+/* 图函数 */
+//添加顶点 到 顶点队列
 void addVertex(char label)
 {
-   struct Vertex* vertex = (struct Vertex*) malloc(sizeof(struct Vertex)) ;
+   V* vertex = (V* )malloc(sizeof(V ) ) ;
    vertex->label = label ;
-   vertex->visited = false ;   //unvisited initialization
-   lstVertices[vertexCount++] = vertex ;  // put "node" into its corrensponding array_list
+   vertex->visited = false ;// 初始化
+
+   lstVertices[vertexCount++] = vertex ;// 顶点 放入‘数组’
 }
-//add edge, record in the //*adjacency matrix*//
+
+//为两个顶点 添加 边
 void addEdge( int start , int end )
 {
    adjMatrix[start][end] = 1 ;
    adjMatrix[end][start] = 1 ;
 }
 
-//display the vertex
-void displayVertex(int vertexIndex) // (input INDEX at array_list)
+//打印顶点元素
+void print(int vertexIndex) //（输入其在数组表中的下标）
 {
    printf("%c ",lstVertices[vertexIndex]->label);
 }
 
-//get the adjacent && unvisited vertex
+//找 相邻 并且 未被访问 的元素
 int getAdjUnvisitedVertexIndex(int vertexIndex)
 {
-   int i;
+   int i ;
 
-   for(i = 0; i<vertexCount; i++)
+   for( i = 0 ; i < vertexCount ; i ++ )
    {
-      if(adjMatrix[vertexIndex][i] == 1 //check adjacency
-         && lstVertices[i]->visited == false   //check if visited
-      )
+      if(adjMatrix[vertexIndex][i] == 1 && lstVertices[i]->visited == false )
          return i;
    }
 	
    return NOT_FOUND ;
 }
 
-//breadth-first traversal
+//广度优先遍历
 void breadthFirstSearch()
 {
    int i ;
 
-   //mark first node as visited
+   //从数组里第一个顶点出发
    lstVertices[0]->visited = true ;
-   //display the vertex
-   displayVertex(0) ;
-
-   // enqueue //*vertex index*// in queue
+   print(0) ;
+   //将顶点的索引 入队
    insert(0) ;
-
-   int unvisitedVertex ; 
 
    while( !isQueueEmpty() )
    {
-      //get the unvisited vertex of vertex which is at front of the queue
-      int dequeueVertexIndex = removeData() ; // hold dequeue element.
+      //出队列，找该元素的相邻点
+      int dequeueVertexIndex = removeData() ; //装载出队的元素
 
-      //adjacent vertex found
-      while( (unvisitedVertex = getAdjUnvisitedVertexIndex(dequeueVertexIndex) ) != NOT_FOUND )
+      int unvisitedVertex ;
+
+      while( (unvisitedVertex = getAdjUnvisitedVertexIndex( dequeueVertexIndex )  )!= NOT_FOUND )//若 找到邻接未访问顶点
       {    
          lstVertices[unvisitedVertex]->visited = true;
-         displayVertex(unvisitedVertex);
-         insert(unvisitedVertex);        
+         print(unvisitedVertex);
+
+         insert(unvisitedVertex); //该元素的下标入队，等待出队时搜寻其相邻未访问元素
       }
    }
 
-   //queue is empty, search is completed, reset the visited flag        
-   for( i = 0 ; i<vertexCount ; i++ )
+   //队列空了，搜索完毕，重置顶点数组为未访问状态
+   for( i = 0 ; i < vertexCount ; i++ )
    {
       lstVertices[i]->visited = false ;
    }
 }
 
-//depth-first traversal
+//深度优先遍历
 void depthFirstSearch()
 {
    int i;
@@ -179,7 +177,7 @@ void depthFirstSearch()
    lstVertices[0]->visited = true;
 
    //display the vertex
-   displayVertex(0);
+   print(0);
 
    //push vertex index in stack
    push(0);
@@ -197,7 +195,7 @@ void depthFirstSearch()
       else
       {
          lstVertices[unvisitedVertex]->visited = true;
-         displayVertex(unvisitedVertex);
+         print(unvisitedVertex);
          push(unvisitedVertex);
       }
    }
@@ -213,27 +211,51 @@ int main()
 {
    int choice ;
 
-   // set adjacency matrix to 0 :
-   for( int i=0 ; i < MAX ; i++ ) 
+   //初始化邻接矩阵 ：
+   for( int i=0 ; i < VERTEX_NUM ; i++ ) 
    {
-      for( int j=0 ; j < MAX ; j++ )       
+      for( int j=0 ; j < VERTEX_NUM ; j++ )       
          adjMatrix[i][j] = 0;
    }
 
-   // put vertex into an "array" :
-   addVertex('A');   // 0
-   addVertex('B');   // 1
-   addVertex('C');   // 2
-   addVertex('D');   // 3
-   addVertex('E');   // 4
- 
-   // add_Edge "1" element at //*both top and bottom*// traingle part of the matrix : 
+   //添加顶点到‘数组’：
+   addVertex('A'); // 0
+   addVertex('B'); // 1
+   addVertex('C'); // 2
+   addVertex('D'); // 3
+   addVertex('E'); // 4
+   addVertex('F'); // 5
+   addVertex('G'); // 6
+   addVertex('H'); // 7
+   addVertex('I'); // 8
+   addVertex('J'); // 9
+   addVertex('K'); // 10
+   addVertex('L'); // 11
+
+   //添加边 ：
    addEdge(0, 1);    // A - B
-   addEdge(0, 2);    // A - C
    addEdge(0, 3);    // A - D
+   addEdge(1, 2);    // B - C
+   addEdge(1, 3);    // B - D
    addEdge(1, 4);    // B - E
    addEdge(2, 4);    // C - E
    addEdge(3, 4);    // D - E
+   addEdge(3, 5);    // D - F
+   addEdge(4, 5);    // E - F
+   addEdge(4, 6);    // E - G
+   addEdge(4, 7);    // E - H
+   addEdge(5, 6);    // F - G
+   addEdge(6, 7);    // G - H
+   addEdge(6, 8);    // G - I
+   addEdge(6, 9);    // G - J
+   addEdge(7, 8);    // H - I
+   addEdge(7, 10);   // H - K
+   addEdge(7, 11);   // H - L
+   addEdge(8, 9);    // I - J
+   addEdge(8, 10);   // I - K
+   addEdge(9, 10);   // J - K
+   addEdge(10, 11);  // K - L
+   
 	
    printf("Your choice( 1 breadth-first-search ; 2 depth-first-search ) : " ) ;
    scanf("%d", &choice) ;
@@ -255,9 +277,9 @@ int main()
 
    printf("\n");
    // check adjacency matrix
-   for( int i = 0 ; i < MAX ; i++ )
+   for( int i = 0 ; i < VERTEX_NUM ; i++ )
    {
-      for( int j = 0 ; j < MAX ; j++ )
+      for( int j = 0 ; j < VERTEX_NUM ; j++ )
       {
          printf("%d ", adjMatrix[i][j]);
       }

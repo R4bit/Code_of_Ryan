@@ -195,3 +195,16 @@ void main()
    printf("Evaluated expression is: %d\n" , evaluate(postfix));
 }
 
+ //添加顶点到‘数组’：
+   addVertex('A'); // 0
+   addVertex('B'); // 1
+   addVertex('C'); // 2
+   addVertex('D'); // 3
+   addVertex('E'); // 4
+   addVertex('F'); // 5
+   addVertex('G'); // 6
+   addVertex('H'); // 7
+   addVertex('I'); // 8
+   addVertex('J'); // 9
+   addVertex('K'); // 10
+   addVertex('L'); // 11
