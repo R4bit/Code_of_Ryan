@@ -22,7 +22,7 @@ int peek(void);
 bool isStackEmpty(void);
 //图
 void addVertex(char);
-void addEdge(int,int);
+void addEdge(int,int,int);
 void print(int);
 int getAdjUnvisitedVertexIndex(int);
 //广度/深度优先遍历
@@ -43,8 +43,9 @@ int top = -1;
 //图
 typedef struct Vertex
 {
-   char label;
-   bool visited;
+   char label ;
+   bool visited ;
+   struct Vertex* father ;//指向该节带点的父节点（构造父树时用）
 }V ;
 
 //顶点计数器
@@ -75,6 +76,7 @@ bool isQueueEmpty()
 }
 
 /* 栈函数 */
+
 //入栈
 void push(int item)
 { 
@@ -97,27 +99,32 @@ bool isStackEmpty()
 }
 
 /* 图函数 */
-//添加顶点 到 顶点队列
+
+// 1 : 添加 [顶点] 到 [顶点‘数组’]
+// 2 : 添加 [顶点到最小生成树的距离] 到 [距离数组]
 void addVertex(char label)
 {
    V* vertex = (V* )malloc(sizeof(V ) ) ;
    vertex->label = label ;
-   vertex->visited = false ;// 初始化
+   vertex->visited = false ;
+   vertex->father = NULL ;// 初始化
 
    lstVertices[vertexCount++] = vertex ;// 顶点 放入‘数组’
+
+
 }
 
 //为两个顶点 添加 边
-void addEdge( int start , int end )
+void addEdge( int start , int end , int len )
 {
-   adjMatrix[start][end] = 1 ;
-   adjMatrix[end][start] = 1 ;
+   adjMatrix[start][end] = len ;
+   adjMatrix[end][start] = len ;
 }
 
 //打印顶点元素
-void print(int vertexIndex) //（输入其在数组表中的下标）
+void print(int vertexIndex) //（输入其在V*顶点数组表中的下标）
 {
-   printf("%c ",lstVertices[vertexIndex]->label);
+   printf(" %c   ",lstVertices[vertexIndex]->label);
 }
 
 //找 相邻 并且 未被访问 的元素
@@ -127,7 +134,7 @@ int getAdjUnvisitedVertexIndex(int vertexIndex)
 
    for( i = 0 ; i < vertexCount ; i ++ )
    {
-      if(adjMatrix[vertexIndex][i] == 1 && lstVertices[i]->visited == false )
+      if(adjMatrix[vertexIndex][i] != 0 && lstVertices[i]->visited == false )
          return i;
    }
 	
@@ -207,6 +214,68 @@ void depthFirstSearch()
    }
 }
 
+//打印邻接矩阵
+void printMatrix()
+{
+   printf("   A    B    C    D    E    F    G    H    I    J    K    L\n") ;
+   for( int i = 0 ; i < VERTEX_NUM ; i++ )
+   {
+      switch ( i )
+      {
+      case 0 :
+         printf("A ") ;
+         break;
+      case 1 :
+         printf("\nB ") ;
+         break;
+      case 2 :
+         printf("\nC ") ;
+         break;
+      case 3 :
+         printf("\nD ") ;
+         break;
+      case 4 :
+         printf("\nE ") ;
+         break;
+      case 5 :
+         printf("\nF ") ;
+         break;
+      case 6 :
+         printf("\nG ") ;
+         break;
+      case 7 :
+         printf("\nH ") ;
+         break;
+      case 8 :
+         printf("\nI ") ;
+         break;
+      case 9 :
+         printf("\nJ ") ;
+         break;
+      case 10 :
+         printf("\nK ") ;
+         break;
+      case 11 :
+         printf("\nL ") ;
+         break;
+      default:
+         break;
+      }
+
+      for( int j = 0 ; j < VERTEX_NUM ; j++ )
+      {
+         if(adjMatrix[i][j] == 0 ){
+            printf("[ ]  " ) ;
+         }else if(adjMatrix[i][j] >= 10){
+            printf("[%d] ", adjMatrix[i][j] ) ;
+         }else{
+            printf("[%d]  ", adjMatrix[i][j] ) ;
+         }
+      }
+      printf("\n");
+   }
+}
+
 int main()
 {
    int choice ;
@@ -233,28 +302,28 @@ int main()
    addVertex('L'); // 11
 
    //添加边 ：
-   addEdge(0, 1);    // A - B
-   addEdge(0, 3);    // A - D
-   addEdge(1, 2);    // B - C
-   addEdge(1, 3);    // B - D
-   addEdge(1, 4);    // B - E
-   addEdge(2, 4);    // C - E
-   addEdge(3, 4);    // D - E
-   addEdge(3, 5);    // D - F
-   addEdge(4, 5);    // E - F
-   addEdge(4, 6);    // E - G
-   addEdge(4, 7);    // E - H
-   addEdge(5, 6);    // F - G
-   addEdge(6, 7);    // G - H
-   addEdge(6, 8);    // G - I
-   addEdge(6, 9);    // G - J
-   addEdge(7, 8);    // H - I
-   addEdge(7, 10);   // H - K
-   addEdge(7, 11);   // H - L
-   addEdge(8, 9);    // I - J
-   addEdge(8, 10);   // I - K
-   addEdge(9, 10);   // J - K
-   addEdge(10, 11);  // K - L
+   addEdge( 0, 1 , 20 );    // A - B
+   addEdge( 0, 3 , 21 );    // A - D
+   addEdge( 1, 2 , 7 );     // B - C
+   addEdge( 1, 3 , 13 );    // B - D
+   addEdge( 1, 4 , 5 );     // B - E
+   addEdge( 2, 4 , 1 );     // C - E
+   addEdge( 3, 4 , 10 );    // D - E
+   addEdge( 3, 5 , 14 );    // D - F
+   addEdge( 4, 5 , 22 );    // E - F
+   addEdge( 4, 6 , 15 );    // E - G
+   addEdge( 4, 7 , 6 );     // E - H
+   addEdge( 5, 6 , 4 );     // F - G
+   addEdge( 6, 7 , 11 );    // G - H
+   addEdge( 6, 8 , 3 );     // G - I
+   addEdge( 6, 9 , 19 );    // G - J
+   addEdge( 7, 8 , 2 );     // H - I
+   addEdge( 7, 10 , 8 );    // H - K
+   addEdge( 7, 11 , 9 );    // H - L
+   addEdge( 8, 9 , 18 );    // I - J
+   addEdge( 8, 10 , 12 );   // I - K
+   addEdge( 9, 10 , 17 );   // J - K
+   addEdge( 10, 11 , 16 );  // K - L
    
 	
    printf("Your choice( 1 breadth-first-search ; 2 depth-first-search ) : " ) ;
@@ -262,12 +331,12 @@ int main()
    switch (choice)
    {
    case 1:
-      printf("\nBreadth First Search:\n");
+      printf("\nBreadth First Search(Start at 'A'):\n");
       breadthFirstSearch();
       break;
       
    case 2:
-      printf("\nDepth First Search:\n");
+      printf("\nDepth First Search(Start at 'A'):\n");
       depthFirstSearch();
       break;
    
@@ -275,17 +344,12 @@ int main()
       break;
    }
 
-   printf("\n");
-   // check adjacency matrix
-   for( int i = 0 ; i < VERTEX_NUM ; i++ )
-   {
-      for( int j = 0 ; j < VERTEX_NUM ; j++ )
-      {
-         printf("%d ", adjMatrix[i][j]);
-      }
-      printf("\n");
-   }
+   printf("\n\n\n");
 
-   return 0;
+   // check adjacency matrix
+   printf("Adjacency Matrix :\n") ;
+   printMatrix() ;
+
+   return 0 ;
 }
 
