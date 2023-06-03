@@ -1,6 +1,6 @@
 /*
 作者：刘稔远  信安221
-该C程序展示用 Prim算法 解决 最小生成树 问题
+该C程序展示用 [Prim算法] 解决 [最小生成树] 问题
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,54 +9,62 @@
 #define VERTEX_NUM 12
 #define NOT_FOUND -1 
 
-//函数声明：
+// 函数声明：
 
-//队列——装载 顶点 的索引
+// 队列——装载 顶点 的索引
 void insert(int);
 int removeData(void);
 bool isQueueEmpty(void);
-//栈
+// 栈
 void push(int);
 int pop(void);
 int peek(void);
 bool isStackEmpty(void);
-//图
+// 图
 void addVertex(char);
 void addEdge(int,int,int);
 void print(int);
 int getAdjUnvisitedVertexIndex(int);
-//广度/深度优先遍历
+// 邻接矩阵
+void printMatrix();
+void initializeMatrix();
+// 广度/深度 优先遍历
 void breadthFirstSearch(void);
 void depthFirstSearch(void);
 
 
-//初始化 数据结构变量
+// 初始化 [数据结构变量]
 
-//队列
+// 队列
 int queue[VERTEX_NUM];
 int rear = -1;
 int front = 0;
 int queueItemCount = 0;
-//栈
+// 栈
 int stack[VERTEX_NUM];
 int top = -1;
-//图
+// 图
 typedef struct Vertex
 {
    char label ;
    bool visited ;
-   struct Vertex* father ;//指向该节带点的父节点（构造父树时用）
+
+   struct Vertex* father ;// 指向该节带点的父节点（构造父树时用）
+   int distanceToTree ;// 装载 [顶点与树的距离]（定义正无穷值为：-1）
 }V ;
 
-//顶点计数器
+// 顶点计数器
 int vertexCount = 0 ; 
-//数组 装载 顶点
+
+// [数组] 装载 [顶点]
 V* lstVertices[VERTEX_NUM] ;
-//邻接矩阵
+
+// [邻接矩阵] 装载 [顶点间边长度]
 int adjMatrix[VERTEX_NUM][VERTEX_NUM] ;
 
 
 /* 队列函数 */
+
 //入队
 void insert(int data)
 {
@@ -101,17 +109,17 @@ bool isStackEmpty()
 /* 图函数 */
 
 // 1 : 添加 [顶点] 到 [顶点‘数组’]
-// 2 : 添加 [顶点到最小生成树的距离] 到 [距离数组]
+// 2 : 初始化 [顶点到最小生成树的距离] 为 -1（即正无穷）
 void addVertex(char label)
 {
    V* vertex = (V* )malloc(sizeof(V ) ) ;
+
    vertex->label = label ;
    vertex->visited = false ;
-   vertex->father = NULL ;// 初始化
+   vertex->father = NULL ;
+   vertex->distanceToTree = -1 ;// 初始化
 
-   lstVertices[vertexCount++] = vertex ;// 顶点 放入‘数组’
-
-
+   lstVertices[vertexCount++] = vertex ;// 顶点 放入[数组]
 }
 
 //为两个顶点 添加 边
@@ -134,7 +142,7 @@ int getAdjUnvisitedVertexIndex(int vertexIndex)
 
    for( i = 0 ; i < vertexCount ; i ++ )
    {
-      if(adjMatrix[vertexIndex][i] != 0 && lstVertices[i]->visited == false )
+      if(adjMatrix[vertexIndex][i] != -1 && lstVertices[i]->visited == false )
          return i;
    }
 	
@@ -214,6 +222,9 @@ void depthFirstSearch()
    }
 }
 
+
+/* 邻接矩阵操作函数 */
+
 //打印邻接矩阵
 void printMatrix()
 {
@@ -264,7 +275,7 @@ void printMatrix()
 
       for( int j = 0 ; j < VERTEX_NUM ; j++ )
       {
-         if(adjMatrix[i][j] == 0 ){
+         if(adjMatrix[i][j] == -1 ){
             printf("[ ]  " ) ;
          }else if(adjMatrix[i][j] >= 10){
             printf("[%d] ", adjMatrix[i][j] ) ;
@@ -276,16 +287,22 @@ void printMatrix()
    }
 }
 
+//初始化邻接矩阵各项为-1
+void initializeMatrix()
+{
+   for( int i=0 ; i < VERTEX_NUM ; i++ ) 
+   {
+      for( int j=0 ; j < VERTEX_NUM ; j++ )       
+         adjMatrix[i][j] = -1 ;
+   }
+}
+
 int main()
 {
    int choice ;
 
    //初始化邻接矩阵 ：
-   for( int i=0 ; i < VERTEX_NUM ; i++ ) 
-   {
-      for( int j=0 ; j < VERTEX_NUM ; j++ )       
-         adjMatrix[i][j] = 0;
-   }
+   initializeMatrix() ;
 
    //添加顶点到‘数组’：
    addVertex('A'); // 0
@@ -328,6 +345,7 @@ int main()
 	
    printf("Your choice( 1 breadth-first-search ; 2 depth-first-search ) : " ) ;
    scanf("%d", &choice) ;
+
    switch (choice)
    {
    case 1:
@@ -343,12 +361,20 @@ int main()
    default:
       break;
    }
-
    printf("\n\n\n");
 
-   // check adjacency matrix
+
+   // 打印原来的邻接矩阵
    printf("Adjacency Matrix :\n") ;
    printMatrix() ;
+
+   // 操作：Prim算法找最小生成树
+
+
+
+   // 打印最小生成树在邻接矩阵上的表示
+   printMatrix() ;
+
 
    return 0 ;
 }

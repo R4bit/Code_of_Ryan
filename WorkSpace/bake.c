@@ -9,54 +9,58 @@
 #define VERTEX_NUM 12
 #define NOT_FOUND -1 
 
-//函数声明：
+// 函数声明：
 
-//队列——装载 顶点 的索引
+// 队列——装载 顶点 的索引
 void insert(int);
 int removeData(void);
 bool isQueueEmpty(void);
-//栈
+// 栈
 void push(int);
 int pop(void);
 int peek(void);
 bool isStackEmpty(void);
-//图
+// 图
 void addVertex(char);
 void addEdge(int,int,int);
 void print(int);
 int getAdjUnvisitedVertexIndex(int);
-//广度/深度优先遍历
+// 广度/深度 优先遍历
 void breadthFirstSearch(void);
 void depthFirstSearch(void);
 
 
-//初始化 数据结构变量
+// 初始化 [数据结构变量]
 
-//队列
+// 队列
 int queue[VERTEX_NUM];
 int rear = -1;
 int front = 0;
 int queueItemCount = 0;
-//栈
+// 栈
 int stack[VERTEX_NUM];
 int top = -1;
-//图
+// 图
 typedef struct Vertex
 {
    char label ;
    bool visited ;
-   struct Vertex* father ;//指向该节带点的父节点（构造父树时用）
+   struct Vertex* father ;// 指向该节带点的父节点（构造父树时用）
+   int distanceToTree ;// 装载 [顶点与树的距离]（定义正无穷值为：-1）
 }V ;
 
-//顶点计数器
+// 顶点计数器
 int vertexCount = 0 ; 
-//数组 装载 顶点
+
+// [数组] 装载 [顶点]
 V* lstVertices[VERTEX_NUM] ;
-//邻接矩阵
+
+// [邻接矩阵] 装载 [顶点间边长度]
 int adjMatrix[VERTEX_NUM][VERTEX_NUM] ;
 
 
 /* 队列函数 */
+
 //入队
 void insert(int data)
 {
