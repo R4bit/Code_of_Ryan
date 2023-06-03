@@ -9,31 +9,7 @@
 #define VERTEX_NUM 12
 #define NOT_FOUND -1 
 
-// 函数声明：
-
-// 队列——装载 顶点 的索引
-void insert(int);
-int removeData(void);
-bool isQueueEmpty(void);
-// 栈
-void push(int);
-int pop(void);
-int peek(void);
-bool isStackEmpty(void);
-// 图
-void addVertex(char);
-void addEdge(int,int,int);
-void print(int);
-int getAdjUnvisitedVertexIndex(int);
-// 邻接矩阵
-void printMatrix();
-void initializeMatrix();
-// 广度/深度 优先遍历
-void breadthFirstSearch(void);
-void depthFirstSearch(void);
-
-
-// 初始化 [数据结构变量]
+////////////////////////////初始化////////////////////////////////////////////////////////
 
 // 队列
 int queue[VERTEX_NUM];
@@ -63,6 +39,34 @@ V* lstVertices[VERTEX_NUM] ;
 int adjMatrix[VERTEX_NUM][VERTEX_NUM] ;
 
 
+////////////////////////////函数声明////////////////////////////////////////////////////////
+
+// 队列
+void insert(int);
+int removeData(void);
+bool isQueueEmpty(void);
+// 栈
+void push(int);
+int pop(void);
+int peek(void);
+bool isStackEmpty(void);
+
+// 图
+void addVertex(char);
+void addEdge(int,int,int);
+void print(int);
+void breadthFirstSearch(int);
+void depthFirstSearch(int);
+int getAdjUnvisitedVertexIndex(int);// core
+// 邻接矩阵
+void printMatrix();
+void initializeMatrix();
+void PrimAlgorithm(int);
+
+
+
+////////////////////////////函数////////////////////////////////////////////////////////
+
 /* 队列函数 */
 
 //入队
@@ -82,6 +86,7 @@ bool isQueueEmpty()
 {
    return queueItemCount == 0;
 }
+
 
 /* 栈函数 */
 
@@ -105,6 +110,7 @@ bool isStackEmpty()
 {
    return top == -1 ;
 }
+
 
 /* 图函数 */
 
@@ -150,15 +156,13 @@ int getAdjUnvisitedVertexIndex(int vertexIndex)
 }
 
 //广度优先遍历
-void breadthFirstSearch()
+void breadthFirstSearch( int startVertexIndex )
 {
-   int i ;
-
-   //从数组里第一个顶点出发
-   lstVertices[0]->visited = true ;
-   print(0) ;
-   //将顶点的索引 入队
-   insert(0) ;
+   //从数组里的[指定下标顶点]出发
+   lstVertices[startVertexIndex]->visited = true ;
+   print( startVertexIndex ) ;
+   //将 [顶点的索引] 入队
+   insert( startVertexIndex ) ;
 
    while( !isQueueEmpty() )
    {
@@ -168,7 +172,7 @@ void breadthFirstSearch()
       int unvisitedVertex ;
 
       while( (unvisitedVertex = getAdjUnvisitedVertexIndex( dequeueVertexIndex )  )!= NOT_FOUND )//若 找到邻接未访问顶点
-      {    
+      {
          lstVertices[unvisitedVertex]->visited = true;
          print(unvisitedVertex);
 
@@ -176,7 +180,8 @@ void breadthFirstSearch()
       }
    }
 
-   //队列空了，搜索完毕，重置顶点数组为未访问状态
+   //队列空，搜索完毕，重置顶点数组为未访问状态
+   int i ;
    for( i = 0 ; i < vertexCount ; i++ )
    {
       lstVertices[i]->visited = false ;
@@ -184,39 +189,35 @@ void breadthFirstSearch()
 }
 
 //深度优先遍历
-void depthFirstSearch()
+void depthFirstSearch( int startVertexIndex )
 {
-   int i;
+   //从数组里的[指定下标顶点]出发
+   lstVertices[startVertexIndex]->visited = true;
+   print( startVertexIndex ) ;
 
-   //mark first node as visited
-   lstVertices[0]->visited = true;
-
-   //display the vertex
-   print(0);
-
-   //push vertex index in stack
-   push(0);
+   //入栈
+   push( startVertexIndex ) ;
 
    while( !isStackEmpty() ) 
    {
-      //get the unvisited vertex of vertex which is at top of the stack
+      //栈顶顶点 的[未访问][邻接]顶点
       int unvisitedVertex = getAdjUnvisitedVertexIndex(peek() ) ;
 
-      //no adjacent vertex found
-      if(unvisitedVertex == -1)
-      {
+      //没找到：
+      if(unvisitedVertex == -1){
          pop() ;
       }
-      else
-      {
+      //找到了：
+      else{
          lstVertices[unvisitedVertex]->visited = true;
          print(unvisitedVertex);
-         push(unvisitedVertex);
+         push(unvisitedVertex);// 其邻接顶点入栈
       }
    }
 
-   //stack is empty, search is complete, reset the visited flag        
-   for(i = 0;i < vertexCount;i++)
+   //栈空，搜索完毕，重置顶点数组为未访问状态
+   int i ;
+   for( i = 0 ; i < vertexCount ; i++ )
    {
       lstVertices[i]->visited = false;
    }
@@ -297,10 +298,14 @@ void initializeMatrix()
    }
 }
 
+void PrimAlgorithm( int startVertexIndex )
+{
+   
+}
+
+
 int main()
 {
-   int choice ;
-
    //初始化邻接矩阵 ：
    initializeMatrix() ;
 
@@ -342,7 +347,7 @@ int main()
    addEdge( 9, 10 , 17 );   // J - K
    addEdge( 10, 11 , 16 );  // K - L
    
-	
+	int choice ;
    printf("Your choice( 1 breadth-first-search ; 2 depth-first-search ) : " ) ;
    scanf("%d", &choice) ;
 
@@ -350,12 +355,12 @@ int main()
    {
    case 1:
       printf("\nBreadth First Search(Start at 'A'):\n");
-      breadthFirstSearch();
+      breadthFirstSearch(0);
       break;
       
    case 2:
       printf("\nDepth First Search(Start at 'A'):\n");
-      depthFirstSearch();
+      depthFirstSearch(0);
       break;
    
    default:
@@ -373,7 +378,7 @@ int main()
 
 
    // 打印最小生成树在邻接矩阵上的表示
-   printMatrix() ;
+   ///printMatrix() ;
 
 
    return 0 ;

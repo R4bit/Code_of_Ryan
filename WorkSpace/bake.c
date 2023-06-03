@@ -9,28 +9,7 @@
 #define VERTEX_NUM 12
 #define NOT_FOUND -1 
 
-// 函数声明：
-
-// 队列——装载 顶点 的索引
-void insert(int);
-int removeData(void);
-bool isQueueEmpty(void);
-// 栈
-void push(int);
-int pop(void);
-int peek(void);
-bool isStackEmpty(void);
-// 图
-void addVertex(char);
-void addEdge(int,int,int);
-void print(int);
-int getAdjUnvisitedVertexIndex(int);
-// 广度/深度 优先遍历
-void breadthFirstSearch(void);
-void depthFirstSearch(void);
-
-
-// 初始化 [数据结构变量]
+////////////////////////////初始化////////////////////////////////////////////////////////
 
 // 队列
 int queue[VERTEX_NUM];
@@ -45,6 +24,7 @@ typedef struct Vertex
 {
    char label ;
    bool visited ;
+
    struct Vertex* father ;// 指向该节带点的父节点（构造父树时用）
    int distanceToTree ;// 装载 [顶点与树的距离]（定义正无穷值为：-1）
 }V ;
@@ -58,6 +38,34 @@ V* lstVertices[VERTEX_NUM] ;
 // [邻接矩阵] 装载 [顶点间边长度]
 int adjMatrix[VERTEX_NUM][VERTEX_NUM] ;
 
+
+////////////////////////////函数声明////////////////////////////////////////////////////////
+
+// 队列
+void insert(int);
+int removeData(void);
+bool isQueueEmpty(void);
+// 栈
+void push(int);
+int pop(void);
+int peek(void);
+bool isStackEmpty(void);
+
+// 图
+void addVertex(char);
+void addEdge(int,int,int);
+void print(int);
+void breadthFirstSearch(int);
+void depthFirstSearch(int);
+int getAdjUnvisitedVertexIndex(int);// core
+// 邻接矩阵
+void printMatrix();
+void initializeMatrix();
+void PrimAlgorithm(int);
+
+
+
+////////////////////////////函数////////////////////////////////////////////////////////
 
 /* 队列函数 */
 
@@ -78,6 +86,7 @@ bool isQueueEmpty()
 {
    return queueItemCount == 0;
 }
+
 
 /* 栈函数 */
 
@@ -102,20 +111,21 @@ bool isStackEmpty()
    return top == -1 ;
 }
 
+
 /* 图函数 */
 
 // 1 : 添加 [顶点] 到 [顶点‘数组’]
-// 2 : 添加 [顶点到最小生成树的距离] 到 [距离数组]
+// 2 : 初始化 [顶点到最小生成树的距离] 为 -1（即正无穷）
 void addVertex(char label)
 {
    V* vertex = (V* )malloc(sizeof(V ) ) ;
+
    vertex->label = label ;
    vertex->visited = false ;
-   vertex->father = NULL ;// 初始化
+   vertex->father = NULL ;
+   vertex->distanceToTree = -1 ;// 初始化
 
-   lstVertices[vertexCount++] = vertex ;// 顶点 放入‘数组’
-
-
+   lstVertices[vertexCount++] = vertex ;// 顶点 放入[数组]
 }
 
 //为两个顶点 添加 边
@@ -138,7 +148,7 @@ int getAdjUnvisitedVertexIndex(int vertexIndex)
 
    for( i = 0 ; i < vertexCount ; i ++ )
    {
-      if(adjMatrix[vertexIndex][i] != 0 && lstVertices[i]->visited == false )
+      if(adjMatrix[vertexIndex][i] != -1 && lstVertices[i]->visited == false )
          return i;
    }
 	
@@ -146,15 +156,13 @@ int getAdjUnvisitedVertexIndex(int vertexIndex)
 }
 
 //广度优先遍历
-void breadthFirstSearch()
+void breadthFirstSearch( int startVertexIndex )
 {
-   int i ;
-
-   //从数组里第一个顶点出发
-   lstVertices[0]->visited = true ;
-   print(0) ;
-   //将顶点的索引 入队
-   insert(0) ;
+   //从数组里的[指定下标顶点]出发
+   lstVertices[startVertexIndex]->visited = true ;
+   print( startVertexIndex ) ;
+   //将 [顶点的索引] 入队
+   insert( startVertexIndex ) ;
 
    while( !isQueueEmpty() )
    {
@@ -164,7 +172,7 @@ void breadthFirstSearch()
       int unvisitedVertex ;
 
       while( (unvisitedVertex = getAdjUnvisitedVertexIndex( dequeueVertexIndex )  )!= NOT_FOUND )//若 找到邻接未访问顶点
-      {    
+      {
          lstVertices[unvisitedVertex]->visited = true;
          print(unvisitedVertex);
 
@@ -172,7 +180,8 @@ void breadthFirstSearch()
       }
    }
 
-   //队列空了，搜索完毕，重置顶点数组为未访问状态
+   //队列空，搜索完毕，重置顶点数组为未访问状态
+   int i ;
    for( i = 0 ; i < vertexCount ; i++ )
    {
       lstVertices[i]->visited = false ;
@@ -180,43 +189,42 @@ void breadthFirstSearch()
 }
 
 //深度优先遍历
-void depthFirstSearch()
+void depthFirstSearch( int startVertexIndex )
 {
-   int i;
+   //从数组里的[指定下标顶点]出发
+   lstVertices[startVertexIndex]->visited = true;
+   print( startVertexIndex ) ;
 
-   //mark first node as visited
-   lstVertices[0]->visited = true;
-
-   //display the vertex
-   print(0);
-
-   //push vertex index in stack
-   push(0);
+   //入栈
+   push( startVertexIndex ) ;
 
    while( !isStackEmpty() ) 
    {
-      //get the unvisited vertex of vertex which is at top of the stack
+      //栈顶顶点 的[未访问][邻接]顶点
       int unvisitedVertex = getAdjUnvisitedVertexIndex(peek() ) ;
 
-      //no adjacent vertex found
-      if(unvisitedVertex == -1)
-      {
+      //没找到：
+      if(unvisitedVertex == -1){
          pop() ;
       }
-      else
-      {
+      //找到了：
+      else{
          lstVertices[unvisitedVertex]->visited = true;
          print(unvisitedVertex);
-         push(unvisitedVertex);
+         push(unvisitedVertex);// 其邻接顶点入栈
       }
    }
 
-   //stack is empty, search is complete, reset the visited flag        
-   for(i = 0;i < vertexCount;i++)
+   //栈空，搜索完毕，重置顶点数组为未访问状态
+   int i ;
+   for( i = 0 ; i < vertexCount ; i++ )
    {
       lstVertices[i]->visited = false;
    }
 }
+
+
+/* 邻接矩阵操作函数 */
 
 //打印邻接矩阵
 void printMatrix()
@@ -268,7 +276,7 @@ void printMatrix()
 
       for( int j = 0 ; j < VERTEX_NUM ; j++ )
       {
-         if(adjMatrix[i][j] == 0 ){
+         if(adjMatrix[i][j] == -1 ){
             printf("[ ]  " ) ;
          }else if(adjMatrix[i][j] >= 10){
             printf("[%d] ", adjMatrix[i][j] ) ;
@@ -280,16 +288,26 @@ void printMatrix()
    }
 }
 
-int main()
+//初始化邻接矩阵各项为-1
+void initializeMatrix()
 {
-   int choice ;
-
-   //初始化邻接矩阵 ：
    for( int i=0 ; i < VERTEX_NUM ; i++ ) 
    {
       for( int j=0 ; j < VERTEX_NUM ; j++ )       
-         adjMatrix[i][j] = 0;
+         adjMatrix[i][j] = -1 ;
    }
+}
+
+void PrimAlgorithm( int startVertexIndex )
+{
+   
+}
+
+
+int main()
+{
+   //初始化邻接矩阵 ：
+   initializeMatrix() ;
 
    //添加顶点到‘数组’：
    addVertex('A'); // 0
@@ -329,30 +347,39 @@ int main()
    addEdge( 9, 10 , 17 );   // J - K
    addEdge( 10, 11 , 16 );  // K - L
    
-	
+	int choice ;
    printf("Your choice( 1 breadth-first-search ; 2 depth-first-search ) : " ) ;
    scanf("%d", &choice) ;
+
    switch (choice)
    {
    case 1:
       printf("\nBreadth First Search(Start at 'A'):\n");
-      breadthFirstSearch();
+      breadthFirstSearch(0);
       break;
       
    case 2:
       printf("\nDepth First Search(Start at 'A'):\n");
-      depthFirstSearch();
+      depthFirstSearch(0);
       break;
    
    default:
       break;
    }
-
    printf("\n\n\n");
 
-   // check adjacency matrix
+
+   // 打印原来的邻接矩阵
    printf("Adjacency Matrix :\n") ;
    printMatrix() ;
+
+   // 操作：Prim算法找最小生成树
+
+
+
+   // 打印最小生成树在邻接矩阵上的表示
+   ///printMatrix() ;
+
 
    return 0 ;
 }
