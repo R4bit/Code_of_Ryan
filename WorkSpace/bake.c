@@ -33,7 +33,7 @@ typedef struct Vertex
 int vertexCount = 0 ; 
 
 // [数组] 装载 [顶点]
-V* lstVertices[VERTEX_NUM] ;
+V* VertexArray[VERTEX_NUM] ;
 
 // [邻接矩阵] 装载 [顶点间边长度]
 int adjMatrix[VERTEX_NUM][VERTEX_NUM] ;
@@ -125,7 +125,7 @@ void addVertex(char label)
    vertex->father = NULL ;
    vertex->distanceToTree = -1 ;// 初始化
 
-   lstVertices[vertexCount++] = vertex ;// 顶点 放入[数组]
+   VertexArray[vertexCount++] = vertex ;// 顶点 放入[数组]
 }
 
 //为两个顶点 添加 边
@@ -138,7 +138,7 @@ void addEdge( int start , int end , int len )
 //打印顶点元素
 void print(int vertexIndex) //（输入其在V*顶点数组表中的下标）
 {
-   printf(" %c   ",lstVertices[vertexIndex]->label);
+   printf(" %c   ",VertexArray[vertexIndex]->label);
 }
 
 //找 相邻 并且 未被访问 的元素
@@ -148,7 +148,7 @@ int getAdjUnvisitedVertexIndex(int vertexIndex)
 
    for( i = 0 ; i < vertexCount ; i ++ )
    {
-      if(adjMatrix[vertexIndex][i] != -1 && lstVertices[i]->visited == false )
+      if(adjMatrix[vertexIndex][i] != -1 && VertexArray[i]->visited == false )
          return i;
    }
 	
@@ -159,7 +159,7 @@ int getAdjUnvisitedVertexIndex(int vertexIndex)
 void breadthFirstSearch( int startVertexIndex )
 {
    //从数组里的[指定下标顶点]出发
-   lstVertices[startVertexIndex]->visited = true ;
+   VertexArray[startVertexIndex]->visited = true ;
    print( startVertexIndex ) ;
    //将 [顶点的索引] 入队
    insert( startVertexIndex ) ;
@@ -173,7 +173,7 @@ void breadthFirstSearch( int startVertexIndex )
 
       while( (unvisitedVertex = getAdjUnvisitedVertexIndex( dequeueVertexIndex )  )!= NOT_FOUND )//若 找到邻接未访问顶点
       {
-         lstVertices[unvisitedVertex]->visited = true;
+         VertexArray[unvisitedVertex]->visited = true;
          print(unvisitedVertex);
 
          insert(unvisitedVertex); //该元素的下标入队，等待出队时搜寻其相邻未访问元素
@@ -184,7 +184,7 @@ void breadthFirstSearch( int startVertexIndex )
    int i ;
    for( i = 0 ; i < vertexCount ; i++ )
    {
-      lstVertices[i]->visited = false ;
+      VertexArray[i]->visited = false ;
    }
 }
 
@@ -192,7 +192,7 @@ void breadthFirstSearch( int startVertexIndex )
 void depthFirstSearch( int startVertexIndex )
 {
    //从数组里的[指定下标顶点]出发
-   lstVertices[startVertexIndex]->visited = true;
+   VertexArray[startVertexIndex]->visited = true;
    print( startVertexIndex ) ;
 
    //入栈
@@ -209,7 +209,7 @@ void depthFirstSearch( int startVertexIndex )
       }
       //找到了：
       else{
-         lstVertices[unvisitedVertex]->visited = true;
+         VertexArray[unvisitedVertex]->visited = true;
          print(unvisitedVertex);
          push(unvisitedVertex);// 其邻接顶点入栈
       }
@@ -219,7 +219,7 @@ void depthFirstSearch( int startVertexIndex )
    int i ;
    for( i = 0 ; i < vertexCount ; i++ )
    {
-      lstVertices[i]->visited = false;
+      VertexArray[i]->visited = false;
    }
 }
 
@@ -300,7 +300,22 @@ void initializeMatrix()
 
 void PrimAlgorithm( int startVertexIndex )
 {
+   //int vertexNextToTree[12] ;
+   //memset( vertexNextToTree , -1 , sizeof(vertexNextToTree ) ) ;
+
+   //将根节点（到最小生成树）距离设置为 0
+   VertexArray[startVertexIndex]->distanceToTree = 0 ; 
+   VertexArray[startVertexIndex]->visited = true ;
+
+   //本数组记录 所有顶点中[距离已构造树最近的顶点]
+   //[0]装顶点的[下标]，[1]装与生成树的[距离]
+   int VertexIndexAndDistanceMinimum[1] = { -1 , -1 } ;
    
+
+
+
+
+
 }
 
 
