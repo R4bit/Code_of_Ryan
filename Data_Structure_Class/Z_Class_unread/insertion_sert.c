@@ -5,7 +5,7 @@ Description: Insertion Sort in C Programming
 */
 
 #include <stdio.h>
-#include <stdbool.h>
+#include <stdbool.h> 
 
 #define MAX 7
 
