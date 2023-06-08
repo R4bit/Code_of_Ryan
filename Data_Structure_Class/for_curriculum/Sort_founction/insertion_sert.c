@@ -56,7 +56,7 @@ void insertionSort(void)
    for(i = 1; i < MAX; i++)
    { 
 	
-      // select a value to be inserted.
+      // select originalArray value to be inserted.
       valueToInsert = intArray[i];
 		
       // select the hole position where number is to be inserted

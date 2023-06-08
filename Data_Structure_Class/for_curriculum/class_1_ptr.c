@@ -1,4 +1,4 @@
-                                             //  指针
+//  指针
 #include <stdio.h>
 #include <stdlib.h>
 int main ()                    //// 1 未分配指针的地址时，要初始化为NULL
@@ -13,7 +13,9 @@ int main ()                    //// 1 未分配指针的地址时，要初始化
    int *ptr =NULL;             //空指针 未分配指针的地址时，要初始化为NULL  
    ptr = (int *)malloc(100*sizeof(int));   //malloc
    free(ptr);                  //free用过的内存
-   ptr=NULL;
+   
+   ptr=NULL;//防止指针悬挂(指针指向已经free的地址)!!!!
+
 
    printf("%d" , sizeof(NULL));
 
