@@ -12,14 +12,15 @@
 
 ////////////////////////////初始化////////////////////////////////////////////////////////
 
-// 队列
+// 优先级队列 ( 数组下标从[1]开始 )
 int queue[VERTEX_NUM];
-int rear = -1;
-int front = 0;
+int rear = 0;
+int front = 1;
 int queueItemCount = 0;
-// 栈
-int stack[VERTEX_NUM];
-int top = -1;
+// 两个数组构建优先级队列：
+int V_index[VERTEX_NUM] ;// 存放顶点在VertexArray数组的下标
+int V_distance[VERTEX_NUM] ;//存放顶点到树距离
+
 // 图
 typedef struct Vertex
 {
@@ -46,16 +47,12 @@ int TreeMatrix[VERTEX_NUM][VERTEX_NUM] ;//表示生成树
 
 ////////////////////////////函数声明////////////////////////////////////////////////////////
 
-// 队列
-void insert(int);
-int removeData(void);
-bool isQueueEmpty(void);
-// 栈
-void push(int);
-int pop(void);
-int peek(void);
-bool isStackEmpty(void);
-
+// 优先级队列
+void printqueue();
+void push_rear(int);
+int pop_head();
+void move_forward(int);
+void move_backward(int);
 // 图
 void addVertex(char);
 void addEdge(int,int,int);
@@ -74,6 +71,93 @@ void PrimAlgorithm(int);
 
 ////////////////////////////函数////////////////////////////////////////////////////////
 
+/*优先级队列函数*/
+
+void printqueue()
+{
+    printf("\nV_index :    ") ;
+    for(int i = 1 ; i <= rear ; i ++ )
+    {
+        printf("%d  " , V_index[i] ) ;
+    }
+    printf("\nV_distance : ") ;
+    for(int i = 1 ; i <= rear ; i ++ )
+    {
+        printf("%d  " , V_distance[i] ) ;
+    }
+
+}
+//在优先级队列里交换两个元素 ( V_index数组里下标为 i 和 i/2 的两个元素 )
+void move_forward(int i )
+{
+   int temp = V_index[i] ;
+   V_index[i] = V_index[i/2] ;
+   V_index[i/2] = temp ;
+
+   temp = V_distance[i] ;
+   V_distance[i] = V_distance[i/2] ;
+   V_distance[i/2] = temp ;
+}
+//在优先级队列里交换两个元素 ( V_index数组里下标为 i 和 2*i 的两个元素 )
+void move_backward(int i )
+{
+   int temp = V_index[i] ;
+   V_index[i] = V_index[2*i] ;
+   V_index[2*i] = temp ;
+
+   temp = V_distance[i] ;
+   V_distance[i] = V_distance[2*i] ;
+   V_distance[2*i] = temp ;
+}
+//从尾部插入，再向前渗透
+void push_rear(int index )
+{
+   // 如果队列有，更新即可，无需入队
+   for(int i = 1 ; i <= rear ; i ++ )
+   {
+        if( V_index[i] == index )
+        {
+            V_distance[i] = VertexArray[index]->distanceToTree ;
+            // 向前渗透：
+            for( int j = i ; ( j != 1 ) && ( V_distance[j] < V_distance[i/j] ) ; j /= 2 ) 
+            {
+                 move_forward( j ) ;
+            }
+            return ;// 更新完优先级队列，返回即可。
+        }  
+   }
+   // 添加：
+   queueItemCount++ ;
+   V_index[++rear] = index ;
+   V_distance[rear] = VertexArray[index]->distanceToTree ;
+   // 向前渗透：
+   for( int i = rear ; ( i != 1 ) && ( V_distance[i] < V_distance[i/2] ) ; i /= 2 ) 
+   {
+        move_forward( i ) ;
+   }
+}
+//从头部取出，尾部元素补充到头部，再向后渗透
+int pop_head()
+{  
+   // 提取头部，并将末尾元素补充到头部：
+   queueItemCount-- ;
+   int head = V_index[1] ;
+   V_index[1] = V_index[rear] ;
+   V_distance[1] = V_distance[rear--] ;
+
+   // 向后渗透：
+   for( int i = 1 ; ( 2*i <= rear ) && ( V_distance[i] > V_distance[2*i] ) ; i *= 2 )
+   {
+      move_backward( i ) ;
+   }
+
+   return head ;
+}
+//check queue empty
+bool isQueueEmpty()
+{
+   return queueItemCount == 0;
+}
 
 /* 图函数 */
 
@@ -98,31 +182,15 @@ int getAdjUnvisitedVertexIndex( int vertexIndex )
    for( i = 0 ; i < vertexCount ; i ++ )
    {
       if(adjMatrix[vertexIndex][i] != -1 && VertexArray[i]->visited == false )
-         return i;
+            return i;
    }
-	
-   return NOT_FOUND ;
-}
-//找[相邻]并且[不在生成树树里]的顶点
-int get_Adjecent_Unvisited_NotTree_VertexIndex( int vertexIndex )
-{
-   int i ;
-   for( i = 0 ; i < vertexCount ; i ++ )
-   {
-      if( adjMatrix[vertexIndex][i] != -1// 相邻
-        //  && InTree[vertexIndex] == 0
-          && VertexArray[i]->visited == false )// 未访问
-        {
-printf("\nAdjacency:%d " , i ) ;
-         return i;}
-   }
-printf("\nNo Adjacent Vertex Left \n") ;
    return NOT_FOUND ;
 }
 bool isInTree( int vertexIndex )
 {
     return InTree[vertexIndex] ;
 }
+
 /* 邻接矩阵操作函数 */
 
 //打印邻接矩阵  0:adjMatrix  1:TreeMatrix
@@ -240,31 +308,31 @@ void addBranch( int start , int end , int len )
 
 void PrimAlgorithm( int startVertexIndex )
 {
-    //将根节点（到最小生成树）距离设置为 0 
+    //将根节点（到最小生成树）距离设置为 0 ,状态为：在树中
     VertexArray[startVertexIndex]->distanceToTree = 0 ; 
-    VertexArray[startVertexIndex]->visited = true ;
     InTree[startVertexIndex] = 1 ;
-    InTree[9] = 1 ;
-    //VertexArray[startVertexIndex]->father = startVertexIndex ;//不为-1 , 表明该节点在树中
 
     int IndexOfMin = startVertexIndex ;
-    int i ;
-    for( i = 0 ; i < vertexCount-1 ; i ++ )//迭代 vertexCount - 1 次
+    
+    for( int i = 0 ; i < vertexCount-1 ; i ++ )//迭代 vertexCount - 1 次
     {
-        //更新相邻节点的信息
+        //找[相邻][未访问][不在树中]的顶点：
         int unvisitedVertex ;
-        while ( (unvisitedVertex = get_Adjecent_Unvisited_NotTree_VertexIndex(IndexOfMin ) ) != NOT_FOUND )
+        while ( ( unvisitedVertex = getAdjUnvisitedVertexIndex(IndexOfMin ) ) != NOT_FOUND )
         {
-            VertexArray[unvisitedVertex]->visited = true ; // 将相邻顶点标记为已访问
+            // 将相邻顶点标记为已访问：
+            VertexArray[unvisitedVertex]->visited = true ; 
 
-            if( ( VertexArray[unvisitedVertex]->distanceToTree > adjMatrix[unvisitedVertex][IndexOfMin] )// 发现更小距离
-                  || VertexArray[unvisitedVertex]->distanceToTree < 0 )// 距离无限大
+            if( ( VertexArray[unvisitedVertex]->distanceToTree > adjMatrix[unvisitedVertex][IndexOfMin] // 发现更小距离
+                  || VertexArray[unvisitedVertex]->distanceToTree < 0 )  // 或者：距离无限大
+                  && !isInTree(unvisitedVertex)  ) // 并且 ： 不在树中
             {
-                VertexArray[unvisitedVertex]->distanceToTree = adjMatrix[unvisitedVertex][IndexOfMin] ;
-                VertexArray[unvisitedVertex]->father = IndexOfMin ;
-printf("\ndistance:%d Father :%d" , VertexArray[unvisitedVertex]->distanceToTree , VertexArray[unvisitedVertex]->father ) ;
-            }
+               VertexArray[unvisitedVertex]->distanceToTree = adjMatrix[unvisitedVertex][IndexOfMin] ;
+               VertexArray[unvisitedVertex]->father = IndexOfMin ;
 
+               // 更新到优先级队列，等待选取：
+               push_rear(unvisitedVertex) ;
+            }
         }
 
         for( int i = 0 ; i < vertexCount ; i ++ )
@@ -272,50 +340,19 @@ printf("\ndistance:%d Father :%d" , VertexArray[unvisitedVertex]->distanceToTree
             VertexArray[i]->visited = false ;
         }
 
-        //int fatherIndex = IndexOfMin ;
-
-        //经过上一步更新记录后，寻找距离生成树距离最小的未访问节点，作为下一步的添加对象
-        int MinDistance = 10000 , Index ;
-        for( Index = 0 ; Index < vertexCount ; Index ++ )
-        {
-            if(  ( InTree[Index] == 0 )// 不在树中-----------------------------------1
-              && ( VertexArray[Index]->distanceToTree > 0 )// 与树相邻--------------2
-              && ( VertexArray[Index]->distanceToTree < MinDistance ) )// 距离小----3
-            {
-printf("\nChange : %d \n" , Index ) ;
-                MinDistance = VertexArray[Index]->distanceToTree ;
-                IndexOfMin = Index ;//
-            }
-        }//现在，IndexOfMin就是下一步应该添加到树的节点的下标
-        InTree[IndexOfMin] = 1 ;
-        //VertexArray[IndexOfMin]->father = fatherIndex ;//
-        MinDistance = 10000 ;
+        // 直接从优先级队列选取距离最近节点：
+        IndexOfMin = pop_head() ;// core
 
         //把距离树最近的节点添加到树的邻接矩阵TreeMatrix , 两个顶点为[距离树最近的顶点]和它的的[父节点]
         addBranch( IndexOfMin , VertexArray[IndexOfMin]->father , VertexArray[IndexOfMin]->distanceToTree ) ;
+        InTree[IndexOfMin] = 1 ;//更新新节点状态：在树中
 
-printf("Distance to tree :\n%d %d %d %d %d %d %d %d %d %d %d %d \n", 
-    VertexArray[0]->distanceToTree,
-    VertexArray[1]->distanceToTree,
-    VertexArray[2]->distanceToTree,
-    VertexArray[3]->distanceToTree,
-    VertexArray[4]->distanceToTree,
-    VertexArray[5]->distanceToTree,
-    VertexArray[6]->distanceToTree,
-    VertexArray[7]->distanceToTree,
-    VertexArray[8]->distanceToTree,
-    VertexArray[9]->distanceToTree,
-    VertexArray[10]->distanceToTree,
-    VertexArray[11]->distanceToTree) ;
-printf("Next up to search : %d \n\n" , IndexOfMin ) ;
     }
-
 }
+
 
 int main()
 {
-    //printf("%d %d %d %d %d %d %d" , InTree[0], InTree[1], InTree[2], InTree[3], InTree[4], InTree[5], InTree[6]) ;
-   //memset( InTree , 0 , 12*sizeof(int) ) ;
    //初始化邻接矩阵 ：
    initializeMatrix() ;
    initializeTreeMatrix() ;
@@ -359,7 +396,7 @@ int main()
    addEdge( 10, 11 , 16 );  // K - L
 
    // 打印原来的邻接矩阵
-   printf("Adjacency Matrix :\n") ;
+   printf("\nAdjacency Matrix :\n") ;
    printMatrix(0) ;
 
    // 操作：Prim算法找最小生成树
@@ -367,6 +404,7 @@ int main()
    printf("\n\n") ;
 
    // 打印最小生成树在邻接矩阵上的表示
+   printf("Tree Matrix :\n") ;
    printMatrix(1) ;
 
 

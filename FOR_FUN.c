@@ -2,21 +2,20 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-int* fun()
-{
-    int num = 1478420 ;
-    return &num ;////WRONG
-// warning: function returns 
-// address of local variable [-Wreturn-local-addr] 
-}
 
 int main()
 {
-    int* ptr = NULL ;
-    ptr = fun() ;
+    // these two have the same size of space : 8 bit
+    int* space = (int* )calloc(2 , sizeof(int ) ) ;
+    int* constantSpace = (int* )malloc( 2*sizeof(int) ) ;
 
+    *space = 1 ;
+    *(space + 1 ) = 5 ;
     
-    printf("%d" , *ptr ) ;
+    printf("%d\n" , *space ) ;
+    printf("%d\n" , *(space+1 ) ) ;
+    printf("%d\n" , space ) ;
+    
 
 
     return 0 ;
