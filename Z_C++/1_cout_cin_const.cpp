@@ -1,13 +1,11 @@
 #include <iostream>
 #include <iomanip>
-//#include "learn2.h"
-
 
 using namespace std;
 // using namespace learn2; //为了避免名称冲突
-                     //应该在源文件中使用using namespace std;
+                     //应该在源文件中使用using  namespace std;
                      //而不是在头文件中使用。
-/*标准命名空间std包含了C++标准库中的所有标识符
+/*标准命名空间std包含了[C++标准库]中的所有标识符
 例如cout、cin、endl等等
 如果不使用using namespace std;
 在代码中使用这些标识符时必须要加上std::前缀
@@ -20,7 +18,6 @@ int main()
     cin >> i >> f ;// i first , then f.
     cout << f << i;
    
-    //cin / cout : from left to right.
     return 0;
 
     /*
@@ -42,10 +39,10 @@ int main()
 
 const char* pc = "abcd";
 //该方法不允许改变指针所指的变量，即
-    pc[3] = ‘x';   是错误的，
-但是，由于pc是一个指向常量的普通指针变量，不是常指针，因此可以改变pc所指的地址，例如
+    pc[3] = 'x';   是错误的，
+但是,由于pc是一个指向常量的普通指针变量,不是常指针,因此可以改变pc所指的地址，例如
     pc = "ervfs";
-该语句付给了指针另一个字符串的地址，改变了pc的值。
+该语句付给了指针另一个字符串的地址,改变了pc的值。
 
 ////常指针：将指针变量所指的地址声明为常量
 

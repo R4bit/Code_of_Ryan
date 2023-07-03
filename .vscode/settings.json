@@ -88,7 +88,8 @@
     "ctype.h": "c",
     "string.h": "c",
     "limits.h": "c",
-    "_mingw.h": "c"
+    "_mingw.h": "c",
+    "unordered_set": "cpp"
   },
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.msvcWarnings": [
