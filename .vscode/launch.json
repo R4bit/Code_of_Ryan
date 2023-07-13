@@ -11,7 +11,7 @@
       "cwd": "d:/A_Exclusived/CTF/Code",
       "program": "d:/A_Exclusived/CTF/Code/build/Debug/outDebug",
       "MIMode": "gdb",
-      "miDebuggerPath": "gdb",
+      "miDebuggerPath": "D:/A_Exclusived/CTF/MinGW/bin/gdb.exe",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
