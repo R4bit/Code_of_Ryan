@@ -373,6 +373,7 @@ void PrimAlgorithm( int startVertexIndex )
         //把距离树最近的节点添加到树的邻接矩阵TreeMatrix , 两个顶点为[距离树最近的顶点]和它的的[父节点]
         addBranch( IndexOfMin , VertexArray[IndexOfMin]->father , VertexArray[IndexOfMin]->distanceToTree ) ;
         InTree[IndexOfMin] = 1 ;//更新新节点状态：在树中
+        
     printf("Distance to tree :\n%d %d %d %d %d %d %d %d %d %d %d %d \n", 
     VertexArray[0]->distanceToTree,
     VertexArray[1]->distanceToTree,
