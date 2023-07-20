@@ -22,3 +22,41 @@
     }
   ]
 }
+/*
+这个JSON配置是用于在Windows系统上使用Visual Studio Code（VSCode）的C/C++扩展和GDB调试器来调试C/C++程序的启动配置。
+
+让我们逐个解释配置项：
+
+"version": "0.2.0"：指定了启动配置的版本。在这里，版本是0.2.0。
+
+"configurations"：这是一个配置对象的数组，包含了所有的调试配置。
+
+a. "name": "C/C++ Runner: Debug Session"：配置的名称，可能是在VSCode中显示的调试配置的名称。
+
+b. "type": "cppdbg"：调试器类型，这里是指定使用C/C++调试器。
+
+c. "request": "launch"：调试器的请求类型，这里是启动一个新的调试会话。
+
+d. "args": []：在调试器运行时传递给程序的额外参数。这里是一个空数组，表示没有附加参数。
+
+e. "stopAtEntry": false：设置为false时，程序在启动时不会在程序入口处停止。
+
+f. "externalConsole": true：设置为true时，调试器将在外部控制台中运行程序。
+
+g. "cwd": "d:/A_Exclusived/CTF/Code"：设置当前工作目录，即程序运行时的工作目录。
+
+h. "program": "d:/A_Exclusived/CTF/Code/build/Debug/outDebug"：要调试的程序的路径。
+
+i. "MIMode": "gdb"：指定GDB调试器的调试引擎。
+
+j. "miDebuggerPath": "D:/A_Exclusived/CTF/MinGW/bin/gdb.exe"：指定GDB调试器的路径。
+
+k. "setupCommands"：一个设置命令对象的数组，用于配置调试器的一些选项。
+
+  - `"description": "Enable pretty-printing for gdb"`：描述该设置命令的目的，即启用GDB的pretty-printing功能。
+
+  - `"text": "-enable-pretty-printing"`：实际要发送给GDB的命令，即启用pretty-printing。
+
+  - `"ignoreFailures": true`：设置为true时，即使命令执行失败，调试器仍会继续进行。
+这个配置文件使得在VSCode中可以方便地调试C/C++程序，并且使用了GDB作为调试器引擎
+*/
