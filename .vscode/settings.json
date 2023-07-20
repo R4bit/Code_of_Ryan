@@ -59,6 +59,16 @@
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "files.associations": {
     "ostream": "cpp",
-    "iostream": "cpp"
+    "iostream": "cpp",
+    "coliassense_board.h": "c",
+    "coliassense_motion.h": "c",
+    "atomic": "c",
+    "cstdint": "c",
+    "random": "c",
+    "*.tcc": "c",
+    "coliassense_lgmd.h": "c",
+    "stm32f4xx_hal.h": "c",
+    "coliassense_def.h": "c",
+    "lgmd_model.h": "c"
   }
 }

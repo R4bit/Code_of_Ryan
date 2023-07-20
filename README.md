@@ -15,3 +15,6 @@ Learning process ... maybe as a diary ? Alright , feel like writing , and of cou
                        Yesterday i tried an interview about reachering , hoping to do reserch , and , of course ,
                        getting closer to my dream. Always remember : Patience is the Key.
 2023.5.31              Long long time no see....Final work for class of DataStructure...
+2023.7.12 ~ 2023.7.16  Well...It's real summer vacation...but i just find myself insane in C++ learning ,
+                       especially at night. For serveral days I just staty up too late to learn the basics of C++.
+2023.7.21              I am back ! Promise too keep.......
