@@ -1,14 +1,45 @@
+// launch.json : gdb 调试 C/C++程序的 启动配置
 {
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "C/C++ Runner: Debug Session",
-      "type": "cppdbg",
-      "preLaunchTask": "C/C++: gcc.exe 生成活动文件", // 对应task.json的"label"
-      "request": "launch",
+      // 给配置项起一个易理解的名字，对应调试模式里左上角的下拉列表：
+      "name": "C/C++_Debug_launch", 
+      // 编程环境：
+      "type": "cppdbg", 
+      // 对应task.json的"label"：
+      "preLaunchTask": "C/C++: gcc.exe 生成活动文件", 
+      // launch or attach（程序一直运行时用） : 
+      "request": "launch", // vscode会根据配置项自动生成启动命令来运行
       "args": [],
       "stopAtEntry": false,
-      "externalConsole": true,
+      "externalConsole": false,
+      "cwd": "d:/A_Exclusived/CTF/Code",
+      "program": "${fileDirname}/${fileBasenameNoExtension}.exe", //
+      "MIMode": "gdb",
+      "miDebuggerPath": "D:/A_Exclusived/CTF/MinGW/bin/gdb.exe",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    },
+
+    // attach 版本：（程序一直运行时用）
+    {
+      // 给配置项起一个易理解的名字，对应调试模式里左上角的下拉列表：
+      "name": "C/C++_Debug_attach", 
+      // 编程环境：
+      "type": "cppdbg", 
+      // 对应task.json的"label"：
+      "preLaunchTask": "C/C++: gcc.exe 生成活动文件", 
+      // launch or attach :
+      "request": "launch", // vscode会根据配置项自动生成启动命令来运行
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": false,
       "cwd": "d:/A_Exclusived/CTF/Code",
       "program": "${fileDirname}/${fileBasenameNoExtension}.exe", //
       "MIMode": "gdb",

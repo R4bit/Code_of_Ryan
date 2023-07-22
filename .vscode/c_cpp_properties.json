@@ -5,6 +5,7 @@
       "includePath": [
         "${workspaceFolder}/**"
       ],
+      // 编译器路径 ：
       "compilerPath": "D:/A_Exclusived/CTF/MinGW/bin/gcc.exe",
       "cStandard": "${default}",
       "cppStandard": "${default}",
