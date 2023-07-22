@@ -144,7 +144,7 @@ void printMatrix(int choice)
          break;
       default:
          break;
-      }
+      } 
 
       if( choice == 0 ){
          for( int j = 0 ; j < VERTEX_NUM ; j++ )

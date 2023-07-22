@@ -4,15 +4,17 @@
 		{
 			"type": "cppbuild",
 			"label": "C/C++: gcc.exe 生成活动文件",
-			"command": "D:/A_Exclusived/CTF/MinGW/bin/gcc.exe",
+			"command": "D:/A_Exclusived/CTF/MinGW/bin/g++.exe", 
+			//用gcc.exe,可编译C/C++,只能debug调试C,C++时会说.exe不存在
+			//用g++.exe,C/C++都能分别编译和调试debug
 			"args": [
 				"-fdiagnostics-color=always",
 				"-g",
 				"${file}",
 				"-o",
-				"${fileDirname}\\${fileBasenameNoExtension}.exe",
+				"${fileDirname}/${fileBasenameNoExtension}.exe",
 				""
-			],
+			], 
 			"options": {
 				"cwd": "D:/A_Exclusived/CTF/MinGW/bin"
 			},
