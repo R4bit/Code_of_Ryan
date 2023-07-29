@@ -69,6 +69,7 @@
     "coliassense_lgmd.h": "c",
     "stm32f4xx_hal.h": "c",
     "coliassense_def.h": "c",
-    "lgmd_model.h": "c"
+    "lgmd_model.h": "c",
+    "new": "cpp"
   }
 }

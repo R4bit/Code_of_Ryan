@@ -18,3 +18,5 @@ Learning process ... maybe as a diary ? Alright , feel like writing , and of cou
 2023.7.12 ~ 2023.7.16  Well...It's real summer vacation...but i just find myself insane in C++ learning ,
                        especially at night. For serveral days I just staty up too late to learn the basics of C++.
 2023.7.21              I am back ! Promise too keep.......
+2023.7.22              .json file is a real disgusting.... i watched introduction video on Bilibili to learn that.
+                       Remember back to the days i initially learn to use VScode , i have been tolerated by ".json" for long.
