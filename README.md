@@ -20,3 +20,4 @@ Learning process ... maybe as a diary ? Alright , feel like writing , and of cou
 2023.7.21              I am back ! Promise too keep.......
 2023.7.22              .json file is a real disgusting.... i watched introduction video on Bilibili to learn that.
                        Remember back to the days i initially learn to use VScode , i have been tolerated by ".json" for long.
+2023.7.29              i made a programme sent message auto.

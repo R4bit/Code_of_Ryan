@@ -70,6 +70,7 @@
     "stm32f4xx_hal.h": "c",
     "coliassense_def.h": "c",
     "lgmd_model.h": "c",
-    "new": "cpp"
+    "new": "cpp",
+    "ccmram_def.h": "c"
   }
 }
