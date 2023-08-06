@@ -14,7 +14,7 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "d:/A_Exclusived/CTF/Code",
+      "cwd": "D:/vscode_kit/my_projects/learning",
       "program": "${fileDirname}/${fileBasenameNoExtension}.exe", //
       "MIMode": "gdb",
       "miDebuggerPath": "D:/A_Exclusived/CTF/MinGW/bin/gdb.exe",

@@ -3,10 +3,10 @@
         {
             "name": "windows-gcc-x86",
             "includePath": [
-               // "${workspaceFolder}/**",
-                "Z:/Programming/Learning/Programs/C++_manageSystem/**"
+                "${workspaceFolder}/**",
+                ""
             ],
-            "compilerPath": "D:/A_Exclusived/CTF/MinGW/bin/gcc.exe",
+            "compilerPath": "D:/vscode_kit/VSCode/MinGW/bin/g++.exe",
             "cStandard": "${default}",
             "cppStandard": "${default}",
             "intelliSenseMode": "windows-gcc-x86",
