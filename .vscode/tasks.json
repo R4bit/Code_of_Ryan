@@ -15,9 +15,9 @@
 				"${fileDirname}/${fileBasenameNoExtension}.exe",
 				""
 			], 
-			"options": {
-				"cwd": "D:/A_Exclusived/CTF/MinGW/bin"
-			},
+		//	"options": {
+		//		"cwd": "D:/A_Exclusived/CTF/MinGW/bin"
+		//	},
 			"problemMatcher": [
 				"$gcc"
 			],

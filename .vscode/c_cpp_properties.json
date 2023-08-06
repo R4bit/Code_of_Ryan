@@ -3,8 +3,8 @@
         {
             "name": "windows-gcc-x86",
             "includePath": [
-                "${workspaceFolder}/**",
-                "Z:/Programming/Learning/Programs/C++_manageSystem/HeaderFile"
+               // "${workspaceFolder}/**",
+                "Z:/Programming/Learning/Programs/C++_manageSystem/**"
             ],
             "compilerPath": "D:/A_Exclusived/CTF/MinGW/bin/gcc.exe",
             "cStandard": "${default}",
