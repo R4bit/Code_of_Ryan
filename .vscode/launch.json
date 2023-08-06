@@ -17,7 +17,7 @@
       "cwd": "D:/vscode_kit/my_projects/learning",
       "program": "${fileDirname}/${fileBasenameNoExtension}.exe", //
       "MIMode": "gdb",
-      "miDebuggerPath": "D:/A_Exclusived/CTF/MinGW/bin/gdb.exe",
+      "miDebuggerPath": "D:/vscode_kit/VSCode/MinGW/bin/gdb.exe",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
@@ -43,7 +43,7 @@
       "cwd": "d:/A_Exclusived/CTF/Code",
       "program": "${fileDirname}/${fileBasenameNoExtension}.exe", //
       "MIMode": "gdb",
-      "miDebuggerPath": "D:/A_Exclusived/CTF/MinGW/bin/gdb.exe",
+      "miDebuggerPath": "D:/vscode_kit/VSCode/MinGW/bin/gdb.exe",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
